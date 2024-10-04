@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="./eel.js"></script>
+    <script type="text/javascript" src="script.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <title>HERMES</title>
+</head>
+<body>
+    <!-- <div class="headbar"></div> -->
+    <header class="header">
+        <div class="menu-icon" id="menu-icon" onclick="return toggle_sidebar_visibility();">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+        </div>
+        <!-- <h1>My Application</h1> -->
+    </header>
+
+    <div class="header2">
+        <input class="transparent-input" type="text" name="" id="">
+    </div>
+
+    <div class="header3">
+        <!-- <input class="transparent-input" type="text" name="" id=""> -->
+         <div style="font-size:180%; font-weight: bold; font-family:'Courier New', Courier, monospace">POI-FILE</div>
+         <div class="poi_fileheader_options">NEW</div>
+         <div class="poi_fileheader_options">OPEN</div>
+         <div class="poi_fileheader_options">SEARCH</div>
+         <div class="poi_fileheader_options">DATABASE</div>
+    </div>
+
+    <div class="main-cont">
+        <div class="maincont_parentcont" id="newpoi_parentcont">
+
+        </div>
+    </div>
+
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar_cross" onclick="return toggle_sidebar_visibility();">◀</div>
+        <ul class="menu-items">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Dashboard</a></li>
+            <li><a href="#">Profile</a></li>
+            <li><a href="#">Settings</a></li>
+            <li><a href="#">Logout</a></li>
+        </ul>
+    </div>
+
+</body>
+</html>

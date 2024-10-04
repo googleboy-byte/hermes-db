@@ -1,0 +1,168 @@
+body{
+    background-color: black;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    color: white;
+    padding: 0%;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 2px;
+    background: linear-gradient(to right, rgba(17, 6, 120, 0.625),  rgba(106, 10, 10, 0.625)); /* Gradient background */;
+    color: white;
+    width: 100%;
+    /* background-size: cover;
+    background-image: url('./icons/header_back.png');
+    background-blend-mode:soft-light; 
+    background-repeat: no-repeat;   */
+
+}
+
+
+.poi_fileheader_options{
+    font-size:120%; 
+    /* font-weight: ;  */
+    font-family:'Courier New', Courier, monospace;
+    margin-left: 2%;
+    padding: 0.5%;
+}
+
+.poi_fileheader_options:hover{
+    background-color: rgb(105, 35, 35);
+}
+
+.main-cont{
+    align-self: center;
+    width: 99.5%;
+    margin: 4px;
+    min-height: 500px;
+    border: 1px solid rgb(1, 1, 131);
+    margin-left: 1px;
+    margin-right: 1px;
+    margin-top: 10px;
+    overflow-y: auto;
+    display: flex;
+    max-height: 75vh;
+}
+
+.maincont_parentcont{
+    flex-grow: 1;
+    width: 99.7%;
+    margin-left: 1px;
+    align-self: center;
+    min-height: 490px;
+    border: 1px solid rgb(1, 1, 131);
+    margin-top: 2px;
+}
+
+.header3 {
+    display: flex;
+    /* align-items: center; */
+    justify-content: flex-start;
+    /* padding: 2px 2px; */
+    flex-direction: row;
+    background: linear-gradient(to right, rgba(13, 4, 87, 0.429),  rgba(71, 71, 71, 0.625)); /* Gradient background */;
+    color: white;
+    width: 100.35%;
+    margin-top: 1px;
+    /* background-size: cover;
+    background-image: url('./icons/header_back.png');
+    background-blend-mode:soft-light; 
+    background-repeat: no-repeat;   */
+
+}
+
+.transparent-input {
+    width: 20%;
+    padding: 7px;
+    padding-left: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 25px; /* Round edges */
+    background: linear-gradient(to top, rgb(41, 40, 40), rgb(41, 40, 40), rgb(106, 10, 10), rgb(106, 10, 10), rgb(190, 189, 189)); /* Gradient background */
+    color: white; /* Text color */
+    font-size: 16px;
+    /* transition: border-color 0.3s;  */
+}
+
+/* Focus styles */
+.transparent-input:focus {
+    outline: none; /* Remove default outline */
+    border-color: #ff0000; /* Change border color on focus */
+}
+
+.header2 {
+    margin-top: 2px;
+    padding-top: 15px;
+    padding-bottom: 7px;
+    padding-left: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    /* padding: 5px 2px; */
+    background-color: rgb(105, 35, 35);
+    color: white;
+    width: 100%;
+}
+
+/* Menu icon styles */
+.menu-icon {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+}
+
+.line {
+    width: 30px;
+    height: 3px;
+    background-color: white;
+    margin: 3px 0;
+    transition: 0.3s;
+    border-radius: 5px;
+    margin-left: 4px;
+}
+
+/* Sidebar styles */
+.sidebar {
+    position: fixed;
+    top: 50px;
+    left: -250px; /* Start off-screen */
+    width: 250px;
+    height: 100%;
+    background-color: #444;
+    transition: 0.3s;
+    padding-top: 20px; /* Space for header */
+    z-index: 1;
+    display:block;
+}
+
+.sidebar_cross{
+    width: 100%; background-color: inherit; color: white; display: flex; flex-direction: row; justify-content: space-around; top: 5px; right: 2px;
+}
+
+.sidebar_cross:hover{
+    background-color: aliceblue;
+    color: black;
+}
+
+.menu-items {
+    list-style-type: none;
+    padding: 0;
+}
+
+.menu-items li {
+    padding: 15px 20px;
+}
+
+.menu-items li a {
+    color: white;
+    text-decoration: none;
+    display: block;
+}
+
+/* Styles for when the sidebar is open */
+.sidebar.open {
+    left: 0; /* Slide in */
+}
+
