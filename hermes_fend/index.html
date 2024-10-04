@@ -10,31 +10,181 @@
 </head>
 <body>
     <!-- <div class="headbar"></div> -->
+    <div id="loader-wrapper">
+        <div style="margin: 10px; color: linear-gradient(to right, rgba(17, 6, 120, 0.625),  rgba(106, 10, 10, 0.625));"><h1>Loading Hermes...</h1></div>
+        <div id="loader"></div>
+    </div>
+    <div class="hermes_icon">
+        HERMES
+    </div>
     <header class="header">
         <div class="menu-icon" id="menu-icon" onclick="return toggle_sidebar_visibility();">
             <div class="line"></div>
             <div class="line"></div>
             <div class="line"></div>
         </div>
+        <div class="signedinas">USER: REESE, JOHN</div>
         <!-- <h1>My Application</h1> -->
     </header>
 
     <div class="header2">
-        <input class="transparent-input" type="text" name="" id="">
+        <input class="transparent-input" type="text" name="" id="showentity_id_input" placeholder="ENTITY ID...">
+        <div class="transparent-input-2">SHOW ENTITY</div>
     </div>
 
     <div class="header3">
         <!-- <input class="transparent-input" type="text" name="" id=""> -->
          <div style="font-size:180%; font-weight: bold; font-family:'Courier New', Courier, monospace">POI-FILE</div>
          <div class="poi_fileheader_options">NEW</div>
-         <div class="poi_fileheader_options">OPEN</div>
+         <div class="poi_fileheader_options">EDIT</div>
          <div class="poi_fileheader_options">SEARCH</div>
          <div class="poi_fileheader_options">DATABASE</div>
     </div>
 
     <div class="main-cont">
         <div class="maincont_parentcont" id="newpoi_parentcont">
-
+            <div id="newpoi_entry_parent" class="maincont_parentcont_70_left">
+                <div class="basic_inputs_newpoi">
+                    <div class="basic_inputs_newpoi_item">
+                        <label for="nameInput">NAME:</label>
+                    </div>
+                    <div class="basic_inputs_newpoi_item">
+                        <input style="margin-left: 5px;" class="stylish-input" type="text" id="nameInput" placeholder="Name...">
+                    </div>
+                    <div style="align-self: flex-end;">
+                        <div class="basic_inputs_newpoi_item">
+                            <label for="fileInput">Id Pic:</label>
+                        </div>
+                        <div class="basic_inputs_newpoi_item">
+                            <input type="file" id="idPicfileInput" multiple>
+                        </div>
+                    </div>
+                </div>
+                <div class="basic_inputs_newpoi">
+                    <div class="basic_inputs_newpoi_item">
+                        <label>DOB:</label>
+                    </div>
+                    <div class="basic_inputs_newpoi_item">
+                        <input style="margin-left: 5px;" class="stylish-input" type="text" id="dobInput" placeholder="dd/mm/yyyy">
+                    </div>
+                    <div style="align-self: flex-end;">
+                        <div class="basic_inputs_newpoi_item">
+                            <label for="fileInput">DOB Proof:</label>
+                        </div>
+                        <div class="basic_inputs_newpoi_item">
+                            <input type="file" id="dobPicfileInput" multiple>
+                        </div>
+                    </div>
+                </div>
+                <div class="basic_inputs_newpoi">
+                    <div class="basic_inputs_newpoi_item">
+                        <label>NATIONALITY:</label>
+                    </div>
+                    <div class="basic_inputs_newpoi_item">
+                        <input style="margin-left: 5px;" class="stylish-input" type="text" id="NATInput" placeholder="Nationality...">
+                    </div>
+                    <div style="align-self:flex-end;">
+                        <div class="basic_inputs_newpoi_item">
+                            <label for="fileInput">Nationality Proof:</label>
+                        </div>
+                        <div class="basic_inputs_newpoi_item">
+                            <input type="file" id="natPicfileInput" multiple>
+                        </div>
+                    </div>
+                </div>
+                <div class="basic_inputs_newpoi">
+                    <div class="basic_inputs_newpoi_item">
+                        <label>ID NUMBER:</label>
+                    </div>
+                    <div class="basic_inputs_newpoi_item">
+                        <input style="margin-left: 5px;" class="stylish-input" type="text" id="GOVTIDInput" placeholder="ID Numbers...">
+                    </div>
+                    <div style="align-self:flex-end;">
+                        <div class="basic_inputs_newpoi_item">
+                            <label for="fileInput">ID Proof:</label>
+                        </div>
+                        <div class="basic_inputs_newpoi_item">
+                            <input type="file" id="govtidPicfileInput" multiple>
+                        </div>
+                    </div>
+                </div>
+                <div class="basic_inputs_newpoi">
+                    <div class="basic_inputs_newpoi_item">
+                        <label>LOCATION:</label>
+                    </div>
+                    <div class="basic_inputs_newpoi_item">
+                        <input style="margin-left: 5px;" class="stylish-input" type="text" id="LOCInput" placeholder="Location...">
+                    </div>
+                    <div style="align-self:flex-end;">
+                        <div class="basic_inputs_newpoi_item">
+                            <label for="fileInput">Location pics:</label>
+                        </div>
+                        <div class="basic_inputs_newpoi_item">
+                            <input type="file" id="locPicfileInput" multiple>
+                        </div>
+                    </div>
+                </div>
+                <div class="basic_inputs_newpoi">
+                    <div class="basic_inputs_newpoi_item">
+                        <label>OCCUPATION:</label>
+                    </div>
+                    <div class="basic_inputs_newpoi_item">
+                        <input style="margin-left: 5px;" class="stylish-input" type="text" id="OCCUPInput" placeholder="Occupation...">
+                    </div>
+                    <div style="align-self:flex-end;">
+                        <div class="basic_inputs_newpoi_item">
+                            <label for="fileInput">Occupation Proof:</label>
+                        </div>
+                        <div class="basic_inputs_newpoi_item">
+                            <input type="file" id="occupPicfileInput" multiple>
+                        </div>
+                    </div>
+                </div>
+                <div class="basic_inputs_newpoi">
+                    <div class="basic_inputs_newpoi_item">
+                        <label>EDUCATION:</label>
+                    </div>
+                    <div class="basic_inputs_newpoi_item">
+                        <input style="margin-left: 5px;" class="stylish-input" type="text" id="EDUInput" placeholder="Education...">
+                    </div>
+                    <div style="align-self:flex-end;">
+                        <div class="basic_inputs_newpoi_item">
+                            <label for="fileInput">Education Proof:</label>
+                        </div>
+                        <div class="basic_inputs_newpoi_item">
+                            <input type="file" id="eduPicfileInput" multiple>
+                        </div>
+                    </div>
+                </div>
+                <div class="basic_inputs_newpoi">
+                    <div class="basic_inputs_newpoi_item">
+                        <label>LANGUAGES:</label>
+                    </div>
+                    <div class="basic_inputs_newpoi_item">
+                        <input style="margin-left: 5px;" class="stylish-input" type="text" id="LANGInput" placeholder="Languages...">
+                    </div>
+                </div>
+            </div>
+            <div id="newpoi_options_parent" class="maincont_parentcont_30_right">
+                <div class="options_optionbtn">
+                    BASIC ENTITIES
+                </div>
+                <div class="options_optionbtn">
+                    REPORT DETAILS
+                </div>
+                <div class="options_optionbtn">
+                    EVENTS DETAILS
+                </div>
+                <div class="options_optionbtn">
+                    UPLOAD IMAGE
+                </div>
+                <div class="options_optionbtn">
+                    UPLOAD FILES
+                </div>
+                <div class="options_optionbtn">
+                    ACCESS PERMISSIONS
+                </div>
+            </div>
         </div>
     </div>
 
