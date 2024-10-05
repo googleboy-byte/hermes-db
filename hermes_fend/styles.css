@@ -51,6 +51,80 @@ body{
     display: none; /* Hidden by default */
 }
 
+.event_container{
+    border: 1px solid rgb(1, 1, 127);
+    width: 95%;
+    margin-left: 2.5%;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    min-height: 50%;
+}
+
+.event_container_headerdiv{
+    margin-left: 2.5%;
+    margin-top: 2%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 90%;
+}
+
+.styled-btn-addevent {
+    text-align: center;
+    font-weight: bold;
+    position: relative;
+    top: 90%;
+    left: 79%;
+    width: 15%;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-family: 'Courier New', Courier, monospace;
+    color: white;
+    /* background: linear-gradient(to right,rgba(17, 6, 120, 0.625), rgb(105, 35, 35)); */
+    background: linear-gradient(to right, rgb(33, 33, 33),  rgb(52, 52, 52));
+    border: 1px solid #000c7d; /* Dark blue border */
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.styled-btn-addevent:hover {
+    background: linear-gradient(to right, rgb(33, 33, 33),  rgb(78, 78, 78));
+    border-color: rgb(105, 35, 35); /* Change to red border on hover */
+}
+
+.styled-btn-addevent:active {
+    transform: scale(0.98); /* Button presses down slightly on click */
+}
+
+
+.styled-btn-addentity {
+    text-align: center;
+    font-weight: bold;
+    position: sticky;
+    bottom: 3%;
+    left: 79%;
+    width: 15%;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-family: 'Courier New', Courier, monospace;
+    color: white;
+    /* background: linear-gradient(to right,rgba(17, 6, 120, 0.625), rgb(105, 35, 35)); */
+    background: linear-gradient(to right, rgb(33, 33, 33),  rgb(52, 52, 52));
+    border: 1px solid #000c7d; /* Dark blue border */
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.styled-btn-addentity:hover {
+    background: linear-gradient(to right, rgb(33, 33, 33),  rgb(78, 78, 78));
+    border-color: rgb(105, 35, 35); /* Change to red border on hover */
+}
+
+.styled-btn-addentity:active {
+    transform: scale(0.98); /* Button presses down slightly on click */
+}
 
 .hermes_icon{
     position: absolute;
@@ -205,8 +279,110 @@ input.stylish-input::placeholder {
     margin-bottom: 20px;
     /* background-image: url('./icons/header_back.png');  */
     background-size: auto 100%, cover;      /* Ensure the background image is contained */
-
+    transform: all 0.3s ease;
+    cursor: pointer;
 }
+
+.text-editor-container {
+    width: 90%; /* Adjust width as needed */
+    height: 500px; /* Adjust height as needed */
+    margin: 20px auto;
+    padding: 10px;
+    border: 1px solid rgb(1, 1, 131); /* Dark blue border similar to other elements */
+    background: linear-gradient(to right, rgb(33, 33, 33), rgb(46, 46, 46));
+    border-radius: 10px;
+    overflow: hidden; /* Ensures the content stays within the box */
+}
+
+.text-editor {
+    align-self: center;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+    margin-top: 1%;
+    width: 90%;
+    height: 90%;
+    background-color: rgba(41, 40, 40, 0.9); /* Slightly transparent dark background */
+    color: white;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 20px;
+    border: none; /* Remove border from the textarea */
+    outline: none; /* Remove default focus outline */
+    padding: 15px;
+    resize: none; /* Prevent resizing */
+    border-radius: 10px;
+    overflow-y: auto;
+}
+
+.text-editor::placeholder {
+    color: #888; /* Grey placeholder text */
+    font-style: italic;
+}
+
+/* Scrollbar styling similar to other scrollable elements */
+.text-editor::-webkit-scrollbar {
+    width: 5px;
+}
+
+.text-editor::-webkit-scrollbar-track {
+    background: #444; /* Darker background for the track */
+}
+
+.text-editor::-webkit-scrollbar-thumb {
+    background-color: #dd2d2d; /* Same as other scrollbar styling */
+    border-radius: 5px;
+}
+
+/* Focus state for interactivity */
+.text-editor:focus {
+    background-color: #333; /* Slightly lighten the background when focused */
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.5); /* Glow effect */
+}
+
+.text-editor-events {
+    align-self: center;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+    margin-top: 1%;
+    width: 90%;
+    min-height: 250px;
+    background-color: rgba(41, 40, 40, 0.9); /* Slightly transparent dark background */
+    color: white;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 20px;
+    border: none; /* Remove border from the textarea */
+    outline: none; /* Remove default focus outline */
+    padding: 15px;
+    resize: none; /* Prevent resizing */
+    border-radius: 10px;
+    overflow-y: auto;
+}
+
+.text-editor-events::placeholder {
+    color: #888; /* Grey placeholder text */
+    font-style: italic;
+}
+
+/* Scrollbar styling similar to other scrollable elements */
+.text-editor-events::-webkit-scrollbar {
+    width: 5px;
+}
+
+.text-editor-events::-webkit-scrollbar-track {
+    background: #444; /* Darker background for the track */
+}
+
+.text-editor-events::-webkit-scrollbar-thumb {
+    background-color: #dd2d2d; /* Same as other scrollbar styling */
+    border-radius: 5px;
+}
+
+/* Focus state for interactivity */
+.text-editor-events:focus {
+    background-color: #333; /* Slightly lighten the background when focused */
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.5); /* Glow effect */
+}
+
+
 
 .options_optionbtn img {
     /* margin: -15px, 0px, -15px, -15px; */
@@ -219,6 +395,10 @@ input.stylish-input::placeholder {
 
 .options_optionbtn:hover{
     background: linear-gradient(to right, rgb(33, 33, 33),  rgb(78, 78, 78));
+}
+
+.options_optionbtn:active {
+    transform: scale(0.98); /* Button presses down slightly on click */
 }
 
 .maincont_parentcont_30_right{
@@ -256,6 +436,7 @@ input.stylish-input::placeholder {
     scrollbar-color: rgba(1, 1, 131, 0.726) #f1f1f1;
     /* scrollbar-highlight-color: #ff0000; */
     scrollbar-width:none;
+    display: flex;
 }
 
 .maincont_parentcont_70_left::-webkit-scrollbar {

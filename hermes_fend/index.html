@@ -43,7 +43,7 @@
 
     <div class="main-cont">
         <div class="maincont_parentcont" id="newpoi_parentcont">
-            <div id="newpoi_entry_parent" class="maincont_parentcont_70_left">
+            <div id="newpoi_entry_basicinputs_parent" class="maincont_parentcont_70_left">
                 <div class="basic_inputs_newpoi">
                     <div class="basic_inputs_newpoi_item">
                         <label for="nameInput">NAME:</label>
@@ -165,23 +165,73 @@
                     </div>
                 </div>
             </div>
+            <!-- <div class="styled-btn-addentity">
+                    ADD ENTITY
+            </div> -->
+
+            <div id="newpoi_entry_reporttext_parent" class="maincont_parentcont_70_left">
+                <!-- <div class="text-editor-container">
+                    <textarea class="text-editor" placeholder="Start typing..."></textarea>
+                </div> -->
+                <textarea class="text-editor" placeholder="Report Text..."></textarea>
+            </div>
+
+            <div id="newpoi_entry_eventdets_parent" class="maincont_parentcont_70_left">
+                <div id="demoevent" class="event_container">
+                    <div class="event_container_headerdiv">
+                        <!-- <div style="width: 20%;">
+                            Event Name:
+                        </div> -->
+                        <div style="width: 15%;"><input style="margin-left: 5px;" class="stylish-input" type="text" id="demo_eventname" placeholder="Event Name..."></div>
+                        <!-- <div>
+                            Event Place:
+                        </div> -->
+                        <div style="width: 15%;"><input style="margin-left: 5px;" class="stylish-input" type="text" id="demo_eventplace" placeholder="Event Place..."></div>
+                        <!-- <div style="width: 20%;">
+                            Event Date:
+                        </div> -->
+                        <div style="width: 15%;"><input style="margin-left: 5px;" class="stylish-input" type="text" id="demo_eventdate" placeholder="Date..."></div>
+                    </div>
+                    <textarea id="demo_event_descriptionbox" class="text-editor-events" placeholder="Event Description..."></textarea>
+                    <div class="event_container_headerdiv">
+                        <div class="basic_inputs_newpoi_item">
+                            <label for="demo_eventfiles_input"><h3> Attach Files:</h3></label>
+                        </div>
+                        <div class="basic_inputs_newpoi_item">
+                            <input type="file" id="demo_eventfiles_input" multiple>
+                        </div>
+                    </div>
+                </div>
+                <div class="styled-btn-addevent">
+                    (+) ADD EVENT
+                </div>
+            </div>
+            
+            <div id="newpoi_entry_custents_parent" class="maincont_parentcont_70_left">customents</div>
+            <div id="newpoi_entry_uploadimg_parent" class="maincont_parentcont_70_left">uploadimages</div>
+            <div id="newpoi_entry_uploadfiles_parent" class="maincont_parentcont_70_left">uploadfiles</div>
+            <div id="newpoi_entry_accessperms_parent" class="maincont_parentcont_70_left">accesspermissions</div>
+
             <div id="newpoi_options_parent" class="maincont_parentcont_30_right">
-                <div class="options_optionbtn">
+                <div class="options_optionbtn" onclick="return load_newpoi_subpage('basicents_option_btn');">
                     BASIC ENTITIES
                 </div>
-                <div class="options_optionbtn">
+                <div class="options_optionbtn" onclick="return load_newpoi_subpage('repdets_option_btn');">
                     REPORT DETAILS
                 </div>
-                <div class="options_optionbtn">
+                <div class="options_optionbtn" onclick="return load_newpoi_subpage('eventsdets_option_btn');">
                     EVENTS DETAILS
                 </div>
-                <div class="options_optionbtn">
+                <div class="options_optionbtn" onclick="return load_newpoi_subpage('custents_option_btn');">
+                    CUSTOM ENTITIES
+                </div>
+                <div class="options_optionbtn" onclick="return load_newpoi_subpage('uploadimg_option_btn');">
                     UPLOAD IMAGE
                 </div>
-                <div class="options_optionbtn">
+                <div class="options_optionbtn" onclick="return load_newpoi_subpage('uploadfiles_option_btn');">
                     UPLOAD FILES
                 </div>
-                <div class="options_optionbtn">
+                <div class="options_optionbtn" onclick="return load_newpoi_subpage('accessperms_option_btn');">
                     ACCESS PERMISSIONS
                 </div>
             </div>
