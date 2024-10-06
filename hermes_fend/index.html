@@ -6,6 +6,8 @@
     <script type="text/javascript" src="./eel.js"></script>
     <script type="text/javascript" src="script.js"></script>
     <link rel="stylesheet" href="styles.css">
+    <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
+    <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
     <title>HERMES</title>
 </head>
 <body>
@@ -229,7 +231,32 @@
                 </div>
             </div>
             
-            <div id="newpoi_entry_uploadimg_parent" class="maincont_parentcont_70_left">uploadimages</div>
+            <div id="newpoi_entry_uploadimg_parent" class="maincont_parentcont_70_left">
+                <div style="display: flex; flex-direction: row; width: 95%; margin-left: 2.5%; margin-top: 2.5%;">
+                    <!-- <input type="file" id="file-upload" class="file-upload" multiple />
+                    <div class="file-input-container">
+                        <label for="file-upload" class="file-upload-label">
+                            UPLOAD IMAGES
+                        </label>
+                    </div>
+                    
+                    <div class="image-preview-container" id="image-preview">
+
+                    </div> -->
+                    <!-- <div id="drop-area">
+                        <p>Drag and drop image files here</p>
+                        <input type="file" id="fileElem" multiple accept="image/*" style="display: none;">
+                        <div id="image-preview" class="scrollable"></div>
+                    </div> -->
+                    <div id="input_imagefile_container" class="gallery-input">
+                        <div id="filepond" class="drag-area">
+                            <input type="file" id="file-input" accept="image/*" multiple>
+                        </div>
+                    </div>
+                    <!-- <div id="file-list"></div> -->
+                    <div id="gallery" class="gallery"></div>
+                </div>
+            </div>
             <div id="newpoi_entry_uploadfiles_parent" class="maincont_parentcont_70_left">uploadfiles</div>
             <div id="newpoi_entry_accessperms_parent" class="maincont_parentcont_70_left">accesspermissions</div>
 
@@ -269,6 +296,5 @@
             <li><a href="#">Logout</a></li>
         </ul>
     </div>
-
 </body>
 </html>
