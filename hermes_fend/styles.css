@@ -72,7 +72,7 @@ body{
 .styled-btn-addevent {
     text-align: center;
     font-weight: bold;
-    position: relative;
+    position: sticky;
     top: 90%;
     left: 79%;
     width: 15%;
