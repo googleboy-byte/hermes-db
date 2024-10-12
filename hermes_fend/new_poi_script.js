@@ -134,8 +134,6 @@ function updateGallery(){
 
 }
 
-
-
 function load_newpoi_subpage(btnid){
     let newPOI_optionpages;
     newPOI_optionpages = new Map([

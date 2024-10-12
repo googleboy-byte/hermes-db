@@ -1,9 +1,11 @@
-// import { load_newpoi_subpage } from "./new_poi_script.js";
-
-function newPOI(){
-    load_newPoi_template();
-    load_newpoi_subpage('uploadimg_option_btn');
+async function newPOI(){
+    await load_newPoi_template();
+    load_newpoi_subpage('basicents_option_btn');
 }
+
+document.addEventListener('DOMContentLoaded', function(){
+    document.getElementById('newpoi_btn').addEventListener('click', newPOI);
+});
 
 async function load_newPoi_template(){
     const new_poi_parent_cont = document.getElementById('maincont');
