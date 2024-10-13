@@ -1,0 +1,7 @@
+Name: Alex Reynolds
+DOB: March 5 1985
+Occupation: Freelance journalist
+Location: New York, NY
+Nationality: American
+Education: BA in Journalism, Columbia University
+Languages: English, Russian, Arabic

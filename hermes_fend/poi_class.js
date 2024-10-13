@@ -1,5 +1,5 @@
 export class POI{
-    constructor(poiid, basicdets, eventdets, reporttext, imagefiles, files){
+    constructor(poiid, basicdets=null, eventdets=null, reporttext=null, imagefiles=null, files=null){
         // basicdets = {
         //     detlabel : [value, [attached_files]]
         // }
@@ -35,7 +35,7 @@ export class EventClass{
 }
 
 export class FileClass{
-    constructor(filehash, filetype, filename, fileobj, filedescription=null, filesource=null){
+    constructor(filehash=null, filetype=null, filename=null, fileobj=null, filedescription=null, filesource=null){
         this.hash = filehash;
         this.type = filetype;
         this.fname = filename;
