@@ -10,21 +10,45 @@ async function newPOI(){
     
     var new_poiid = await new_poiID();
     new_POI_obj = new POI(new_poiid);
-    console.log(new_POI_obj);
-    document.getElementById('import_basicdets_btn').addEventListener('change', async function(event) {
-        const file = event.target.files[0];
-        if (file) {
-            await importBasicDets(file);
-            sync_frontend_newPOI(new_POI_obj);
-        }
-    });
+    
+    // console.log(new_POI_obj);
+    
+    setTriggers();
+
 
     // alert(new_POI_obj.id);
 }
 
+function setTriggers(){
+    document.getElementById('import_basicdets_btn').addEventListener('change', async function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            await importBasicDets(file);
+            
+            // document.getElementById('report_tarea').textContent = JSON.stringify(new_POI_obj, null, 2);
+        }
+    });
+}
 
-function sync_frontend_newPOI(POI_){
+function sync_frontend_newPOI(POI_=null){
+    if (POI_ == null){
+        POI_ = new_POI_obj;
+    }
+    if(POI_ instanceof POI){
 
+        // sync basic values
+
+        document.getElementById('nameInput').value = POI_.basic.name.get('value');
+        document.getElementById('genderInput').value = POI_.basic.gender.get('value');
+        document.getElementById('dobInput').value = POI_.basic.dob.get('value');
+        document.getElementById('NATInput').value = POI_.basic.nationality.get('value');
+        document.getElementById('GOVTIDInput').value = POI_.basic.idnum.get('value');
+        document.getElementById('LOCInput').value = POI_.basic.location.get('value');
+        document.getElementById('OCCUPInput').value = POI_.basic.occupation.get('value');
+        document.getElementById('EDUInput').value = POI_.basic.education.get('value');
+        document.getElementById('LANGInput').value = POI_.basic.languages.get('value');
+    
+    }
 }
 
 async function importBasicDets(filehandle){
@@ -59,6 +83,8 @@ async function importBasicDets(filehandle){
             new_POI_obj.basic.education.set('value', bdetsmap.get('Education').get('value'));
             new_POI_obj.basic.languages.set('value', bdetsmap.get('Languages').get('value'));
             
+
+            sync_frontend_newPOI(new_POI_obj);
             // const bdets_map_jsonified = misc_methods.mapToObject(bdetsmap);
             // console.log(JSON.stringify(bdets_map_jsonified, null, 2));
             // console.log(new_POI_obj);
