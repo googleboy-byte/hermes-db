@@ -1,4 +1,4 @@
-import { POI, EventClass, FileClass } from './poi_class.js';
+import { POI, EventClass, FileClass, basicEntities } from './poi_class.js';
 import * as misc_methods from './misc_functions.js';
 
 var new_POI_obj = null;
@@ -10,7 +10,7 @@ async function newPOI(){
     
     var new_poiid = await new_poiID();
     new_POI_obj = new POI(new_poiid);
-
+    console.log(new_POI_obj);
     document.getElementById('import_basicdets_btn').addEventListener('change', async function(event) {
         const file = event.target.files[0];
         if (file) {
@@ -48,10 +48,20 @@ async function importBasicDets(filehandle){
                 finvallist.push(finval);
             }
             var bdetsmap = misc_methods.list_to_map(bdets_keys, finvallist);
-            new_POI_obj.basic = bdetsmap;
-
-            const bdets_map_jsonified = misc_methods.mapToObject(bdetsmap);
-            console.log(JSON.stringify(bdets_map_jsonified, null, 2))
+            
+            new_POI_obj.basic.name.set('value', bdetsmap.get('Name').get('value'));
+            new_POI_obj.basic.dob.set('value', bdetsmap.get('DOB').get('value'));
+            new_POI_obj.basic.gender.set('value', bdetsmap.get('Gender').get('value'));
+            new_POI_obj.basic.nationality.set('value', bdetsmap.get('Nationality').get('value'));
+            new_POI_obj.basic.idnum.set('value', bdetsmap.get('ID Number').get('value'));
+            new_POI_obj.basic.location.set('value', bdetsmap.get('Location').get('value'));
+            new_POI_obj.basic.occupation.set('value', bdetsmap.get('Occupation').get('value'));
+            new_POI_obj.basic.education.set('value', bdetsmap.get('Education').get('value'));
+            new_POI_obj.basic.languages.set('value', bdetsmap.get('Languages').get('value'));
+            
+            // const bdets_map_jsonified = misc_methods.mapToObject(bdetsmap);
+            // console.log(JSON.stringify(bdets_map_jsonified, null, 2));
+            // console.log(new_POI_obj);
         }
 
     };

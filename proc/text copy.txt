@@ -1,7 +1,9 @@
 Name: Alex Reynolds
+Gender: Male
 DOB: March 5 1985
-Occupation: Freelance journalist
-Location: New York, NY
 Nationality: American
+ID number: UNKNOWN
+location: New York, NY
+Occupation Freelance journalist
 Education: BA in Journalism, Columbia University
 Languages: English, Russian, Arabic
