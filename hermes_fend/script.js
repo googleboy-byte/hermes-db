@@ -28,6 +28,23 @@ function setTriggers(){
             // document.getElementById('report_tarea').textContent = JSON.stringify(new_POI_obj, null, 2);
         }
     });
+
+    // basic file attachment triggers
+
+    document.getElementById('idPicfileInput').addEventListener('change', async function(event){
+        const file = event.target.files[0];
+        if (file){
+            var input_file_this = new FileClass();
+            var setfile = await input_file_this.set_file(file);
+            if (setfile){
+                new_POI_obj.basic.name.set('fileobj', input_file_this);
+                // console.log(new_POI_obj.basic);
+                sync_frontend_newPOI();
+            }
+        }
+    });
+
+
 }
 
 function sync_frontend_newPOI(POI_=null){
@@ -47,6 +64,42 @@ function sync_frontend_newPOI(POI_=null){
         document.getElementById('OCCUPInput').value = POI_.basic.occupation.get('value');
         document.getElementById('EDUInput').value = POI_.basic.education.get('value');
         document.getElementById('LANGInput').value = POI_.basic.languages.get('value');
+
+        if (POI_.basic.name.get('fileobj') instanceof FileClass){
+            document.getElementById('idpic_poi_filename').textContent = POI_.basic.name.get('fileobj').fname;
+        } else {
+            document.getElementById('idpic_poi_filename').textContent = "null";
+        }
+        if (POI_.basic.dob.get('fileobj') instanceof FileClass){
+            document.getElementById('dobpicfile_poi_filename').textContent = POI_.basic.dob.get('fileobj').fname;
+        } else {
+            document.getElementById('dobpicfile_poi_filename').textContent = "null";
+        }
+        if (POI_.basic.nationality.get('fileobj') instanceof FileClass){
+            document.getElementById('natpic_poi_filename').textContent = POI_.basic.nationality.get('fileobj').fname;
+        } else {
+            document.getElementById('natpic_poi_filename').textContent = "null";
+        }
+        if (POI_.basic.idnum.get('fileobj') instanceof FileClass){
+            document.getElementById('govtid_poi_filename').textContent = POI_.basic.idnum.get('fileobj').fname;
+        } else {
+            document.getElementById('govtid_poi_filename').textContent = "null";
+        }
+        if (POI_.basic.location.get('fileobj') instanceof FileClass){
+            document.getElementById('locpic_poi_filename').textContent = POI_.basic.location.get('fileobj').fname;
+        } else {
+            document.getElementById('locpic_poi_filename').textContent = "null";
+        }
+        if (POI_.basic.occupation.get('fileobj') instanceof FileClass){
+            document.getElementById('occuppic_poi_filename').textContent = POI_.basic.occupation.get('fileobj').fname;
+        } else {
+            document.getElementById('occuppic_poi_filename').textContent = "null";
+        }
+        if (POI_.basic.education.get('fileobj') instanceof FileClass){
+            document.getElementById('edupic_poi_filename').textContent = POI_.basic.education.get('fileobj').fname;
+        } else {
+            document.getElementById('edupic_poi_filename').textContent = "null";
+        }
     
     }
 }

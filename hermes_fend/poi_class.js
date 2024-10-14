@@ -71,4 +71,22 @@ export class FileClass{
         this.desc = filedescription;
         this.src = filesource;
     }
+
+    async set_file(fileObject){
+        if (fileObject instanceof File){
+            this.fname = fileObject.name;
+            this.type = fileObject.type;
+            this.file = await fileObject.arrayBuffer();
+            this.hash = await calculate_sha256(this.file);
+            return true;
+        } else{
+            return false;
+        }
+    }
+}
+
+async function calculate_sha256(fileBuffer){
+    const hashBuffer = await crypto.subtle.digest('SHA-256', fileBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 }
