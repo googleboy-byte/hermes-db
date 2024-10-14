@@ -48,8 +48,8 @@ def parse_basicdets(content):
             to_add_values.append('UNKNOWN') 
     keylist.extend(to_add_keys)
     vallist.extend(to_add_values)
-    for i in range(len(keylist)):
-        print(keylist[i], vallist[i])
+    # for i in range(len(keylist)):
+    #     print(keylist[i], vallist[i])
     return keylist, vallist
 
 eel.start("index.html", size=(1600, 900), mode="chromium")

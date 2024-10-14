@@ -20,6 +20,9 @@ async function newPOI(){
 }
 
 function setTriggers(){
+
+    // import basic button trigger
+
     document.getElementById('import_basicdets_btn').addEventListener('change', async function(event) {
         const file = event.target.files[0];
         if (file) {
@@ -31,19 +34,51 @@ function setTriggers(){
 
     // basic file attachment triggers
 
-    document.getElementById('idPicfileInput').addEventListener('change', async function(event){
-        const file = event.target.files[0];
-        if (file){
-            var input_file_this = new FileClass();
-            var setfile = await input_file_this.set_file(file);
-            if (setfile){
-                new_POI_obj.basic.name.set('fileobj', input_file_this);
-                // console.log(new_POI_obj.basic);
-                sync_frontend_newPOI();
-            }
-        }
-    });
+    var basic_fileInput_POI_ = new Map([
+                                    ['idPicfileInput', new_POI_obj.basic.name],
+                                    ['dobPicfileInput', new_POI_obj.basic.dob],
+                                    ['natPicfileInput', new_POI_obj.basic.nationality],
+                                    ['govtidPicfileInput', new_POI_obj.basic.idnum],
+                                    ['locPicfileInput', new_POI_obj.basic.location],
+                                    ['occupPicfileInput', new_POI_obj.basic.occupation],
+                                    ['eduPicfileInput', new_POI_obj.basic.education]
+                                ]);
 
+    for (const [fieldid, file_obj_pointer] of basic_fileInput_POI_){
+        document.getElementById(fieldid).addEventListener('change', async function(event){
+            const file = event.target.files[0];
+            if (file){
+                var input_file_this = new FileClass();
+                var setfile = await input_file_this.set_file(file);
+                if (setfile){
+                    file_obj_pointer.set('fileobj', input_file_this);
+                    // console.log(new_POI_obj.basic);
+                    sync_frontend_newPOI();
+                }
+            }
+        });
+    }
+
+    // basic text input triggers
+
+    var basic_textInput_POI_ = new Map([
+        ['nameInput', new_POI_obj.basic.name],
+        ['genderInput', new_POI_obj.basic.gender],
+        ['dobInput', new_POI_obj.basic.dob],
+        ['NATInput', new_POI_obj.basic.nationality],
+        ['GOVTIDInput', new_POI_obj.basic.idnum],
+        ['LOCInput', new_POI_obj.basic.location],
+        ['OCCUPInput', new_POI_obj.basic.occupation],
+        ['EDUInput', new_POI_obj.basic.education],
+        ['LANGInput', new_POI_obj.basic.languages] 
+    ]);
+
+    for (const [tfield_id, pointer] of basic_textInput_POI_){
+        document.getElementById(tfield_id).addEventListener('input', function(event){
+            pointer.set('value', event.target.value);
+            // console.log(tfield_id, pointer.get('value'));
+        });
+    }
 
 }
 
@@ -55,52 +90,56 @@ function sync_frontend_newPOI(POI_=null){
 
         // sync basic values
 
-        document.getElementById('nameInput').value = POI_.basic.name.get('value');
-        document.getElementById('genderInput').value = POI_.basic.gender.get('value');
-        document.getElementById('dobInput').value = POI_.basic.dob.get('value');
-        document.getElementById('NATInput').value = POI_.basic.nationality.get('value');
-        document.getElementById('GOVTIDInput').value = POI_.basic.idnum.get('value');
-        document.getElementById('LOCInput').value = POI_.basic.location.get('value');
-        document.getElementById('OCCUPInput').value = POI_.basic.occupation.get('value');
-        document.getElementById('EDUInput').value = POI_.basic.education.get('value');
-        document.getElementById('LANGInput').value = POI_.basic.languages.get('value');
+        var text_update_POI_ = new Map([
+            ['nameInput', POI_.basic.name],
+            ['genderInput', POI_.basic.gender],
+            ['dobInput', POI_.basic.dob],
+            ['NATInput', POI_.basic.nationality],
+            ['GOVTIDInput', POI_.basic.idnum],
+            ['LOCInput', POI_.basic.location],
+            ['OCCUPInput', POI_.basic.occupation],
+            ['EDUInput', POI_.basic.education],
+            ['LANGInput', POI_.basic.languages] 
+        ]);
 
-        if (POI_.basic.name.get('fileobj') instanceof FileClass){
-            document.getElementById('idpic_poi_filename').textContent = POI_.basic.name.get('fileobj').fname;
-        } else {
-            document.getElementById('idpic_poi_filename').textContent = "null";
+        for (const [field, pointer_POI_] of text_update_POI_){
+            document.getElementById(field).value = pointer_POI_.get('value');
         }
-        if (POI_.basic.dob.get('fileobj') instanceof FileClass){
-            document.getElementById('dobpicfile_poi_filename').textContent = POI_.basic.dob.get('fileobj').fname;
-        } else {
-            document.getElementById('dobpicfile_poi_filename').textContent = "null";
-        }
-        if (POI_.basic.nationality.get('fileobj') instanceof FileClass){
-            document.getElementById('natpic_poi_filename').textContent = POI_.basic.nationality.get('fileobj').fname;
-        } else {
-            document.getElementById('natpic_poi_filename').textContent = "null";
-        }
-        if (POI_.basic.idnum.get('fileobj') instanceof FileClass){
-            document.getElementById('govtid_poi_filename').textContent = POI_.basic.idnum.get('fileobj').fname;
-        } else {
-            document.getElementById('govtid_poi_filename').textContent = "null";
-        }
-        if (POI_.basic.location.get('fileobj') instanceof FileClass){
-            document.getElementById('locpic_poi_filename').textContent = POI_.basic.location.get('fileobj').fname;
-        } else {
-            document.getElementById('locpic_poi_filename').textContent = "null";
-        }
-        if (POI_.basic.occupation.get('fileobj') instanceof FileClass){
-            document.getElementById('occuppic_poi_filename').textContent = POI_.basic.occupation.get('fileobj').fname;
-        } else {
-            document.getElementById('occuppic_poi_filename').textContent = "null";
-        }
-        if (POI_.basic.education.get('fileobj') instanceof FileClass){
-            document.getElementById('edupic_poi_filename').textContent = POI_.basic.education.get('fileobj').fname;
-        } else {
-            document.getElementById('edupic_poi_filename').textContent = "null";
-        }
-    
+
+        // sync basic file objects
+
+        var fileupdate_POI_ = new Map([
+            ['idpic_poi_filename', POI_.basic.name],
+            ['dobpicfile_poi_filename', POI_.basic.dob],
+            ['natpic_poi_filename', POI_.basic.nationality],
+            ['govtid_poi_filename', POI_.basic.idnum],
+            ['locpic_poi_filename', POI_.basic.location],
+            ['occuppic_poi_filename', POI_.basic.occupation],
+            ['edupic_poi_filename', POI_.basic.education],
+        ]);
+
+        var filetag_map_fileinput = new Map([
+            ['idpic_poi_filename', 'idPicfileInput'],
+            ['dobpicfile_poi_filename', 'dobPicfileInput'],
+            ['natpic_poi_filename', 'natPicfileInput'],
+            ['govtid_poi_filename', 'govtidPicfileInput'],
+            ['locpic_poi_filename', 'locPicfileInput'],
+            ['occuppic_poi_filename', 'occupPicfileInput'],
+            ['edupic_poi_filename', 'eduPicfileInput'],
+        ]);
+
+        for (const [filefield, fileobj] of fileupdate_POI_){
+            if (fileobj.get('fileobj') instanceof FileClass){
+                document.getElementById(filefield).textContent = fileobj.get('fileobj').fname;
+                document.getElementById(filefield).onclick = function(){
+                    fileobj.set('fileobj', null);
+                    sync_frontend_newPOI();
+                    document.getElementById(filetag_map_fileinput.get(filefield)).value = "";
+                }
+            } else {
+                document.getElementById(filefield).textContent = "null";
+            }
+        }    
     }
 }
 
