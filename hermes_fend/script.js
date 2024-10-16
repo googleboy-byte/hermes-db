@@ -19,6 +19,46 @@ async function newPOI(){
     // alert(new_POI_obj.id);
 }
 
+async function addEventClicked(){
+    try{
+        if (new_POI_obj){
+            
+            // new event backend
+
+            var new_POI_id_ = new_POI_obj.id;
+            var new_event_id = await eel.new_event_ID(new_POI_id_)();
+            var this_event = new EventClass();
+            this_event.id = new_event_id;
+            
+            // finish processing event. (remember to generate default file map in event class when created)
+            // add event to new poi obj
+            // set up frontend for new event
+            // set triggers for new event edit (eventdets and eventfiles)
+            // add option to delete event when button clicked.
+
+            // new event frontend
+
+            const event_parentcont = document.getElementById('newpoi_entry_eventdets_parent');
+            const new_event_temp_ = await fetch('new_event_fend.html');
+            if (!new_event_temp_.ok){
+                throw new Error('Failed to fetch new event template!!!');
+            }
+            var event_divtext_ = await new_event_temp_.text();
+            var temp_eventholder_ = document.createElement('div');
+            temp_eventholder_.innerHTML = event_divtext_;
+    
+            while(temp_eventholder_.firstChild){
+                temp_eventholder_.firstChild.id = new_event_id + '_eventcont_';
+                event_parentcont.appendChild(temp_eventholder_.firstChild);
+            }
+            event_parentcont.appendChild(temp_eventholder_.firstChild);
+        }
+    } catch(error){
+        console.log("Error creating new event from template: ", error);
+    }
+    
+}
+
 function setTriggers(){
 
     // import basic button trigger
@@ -80,6 +120,14 @@ function setTriggers(){
         });
     }
 
+    // report field trigger;
+
+    document.getElementById('report_tarea').addEventListener('input', function(event){
+        var field_val = event.target.value;
+        new_POI_obj.report = field_val;
+        console.log(new_POI_obj.report);
+    });
+
 }
 
 function sync_frontend_newPOI(POI_=null){
@@ -139,7 +187,13 @@ function sync_frontend_newPOI(POI_=null){
             } else {
                 document.getElementById(filefield).textContent = "null";
             }
-        }    
+        }
+        
+        // sync report 
+
+        document.getElementById('report_tarea').textContent = POI_.report;
+
+        
     }
 }
 
