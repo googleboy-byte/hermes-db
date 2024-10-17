@@ -17,6 +17,20 @@ def newPOIID(existing_val_list=[]):
     return retval
 
 @eel.expose
+def new_event_ID(new_POI_id_):
+    event_id_list_this_poi_ = []
+    charlist = list("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
+    retval = new_POI_id_ + "_event_"
+    for i in range(10):
+        retval += random.choice(charlist)
+    while retval in event_id_list_this_poi_:
+        newval = new_POI_id_ + "_event_"
+        for i in range(10):
+            newval += random.choice(charlist)
+        retval = newval
+    return retval
+
+@eel.expose
 def parse_basicdets(content):
     contentlist = content.split("\n")
     keylist, vallist = [], []

@@ -19,25 +19,12 @@ async function newPOI(){
     // alert(new_POI_obj.id);
 }
 
-async function addEventClicked(){
+async function fend_update_EVENT_(POI_event_){
+
     try{
-        if (new_POI_obj){
-            
-            // new event backend
-
-            var new_POI_id_ = new_POI_obj.id;
-            var new_event_id = await eel.new_event_ID(new_POI_id_)();
-            var this_event = new EventClass();
-            this_event.id = new_event_id;
-            
-            // finish processing event. (remember to generate default file map in event class when created)
-            // add event to new poi obj
-            // set up frontend for new event
-            // set triggers for new event edit (eventdets and eventfiles)
-            // add option to delete event when button clicked.
-
+        if (POI_event_ instanceof EventClass && POI_event_.id != null){
             // new event frontend
-
+    
             const event_parentcont = document.getElementById('newpoi_entry_eventdets_parent');
             const new_event_temp_ = await fetch('new_event_fend.html');
             if (!new_event_temp_.ok){
@@ -48,10 +35,79 @@ async function addEventClicked(){
             temp_eventholder_.innerHTML = event_divtext_;
     
             while(temp_eventholder_.firstChild){
-                temp_eventholder_.firstChild.id = new_event_id + '_eventcont_';
+                temp_eventholder_.firstChild.id = POI_event_.id + '_eventcont_';
+                var renew_id_map_ = new Map([
+                    ["#demo_eventname", POI_event_.id + "_eventname"],
+                    ["#demo_eventplace", POI_event_.id + "_eventplace"],
+                    ["#demo_eventdate", POI_event_.id + "_eventdate"],
+                    ["#demo_event_descriptionbox", POI_event_.id + "_event_descriptionbox"],
+                    ["#demo_eventfiles_input", POI_event_.id + "_eventfiles_input"]
+                ]);
+                for (const [demo_id_, act_id_] of renew_id_map_){
+                    temp_eventholder_.firstChild.querySelector(demo_id_).id = act_id_;
+                }
                 event_parentcont.appendChild(temp_eventholder_.firstChild);
             }
-            event_parentcont.appendChild(temp_eventholder_.firstChild);
+            // event_parentcont.appendChild(temp_eventholder_.firstChild);
+        }
+    } catch (error){
+        console.log("error in fend_update_EVENT_ :", error);
+    }
+    return
+}
+
+async function attach_event_triggers(POI_, event_) {
+    // attach/renew event to new_POI
+    if (event_ instanceof EventClass && POI_ instanceof POI && event_.id != null){
+        POI_.add_EVENT_(event_);
+
+        var field_2_mem_map_ = new Map([
+            [POI_.events.get(event_.id).name, event_.id + "_eventname"],
+            [POI_.events.get(event_.id).place, event_.id + "_eventplace"],
+            [POI_.events.get(event_.id).datetime, event_.id + "_eventdate"],
+            [POI_.events.get(event_.id).desc, event_.id + "_event_descriptionbox"],
+            [POI_.events.get(event_.id).files, event_.id + "_eventfiles_input"]
+        ]);
+
+        // keeping separate function to handle files, generalize triggers for other event properties
+
+        for (var [mem, field] of field_2_mem_map_){
+            if(!field.includes("_eventfiles_input")){
+                document.addEventListener('input', function(event){
+                    var newval = event.target.value;
+                    mem = newval;
+                    console.log(mem);
+                });
+            } else{
+                // handle file input to event
+            }
+        }
+
+        
+    }    
+}
+
+async function addEventClicked(eventid=null){
+    try{
+        if (new_POI_obj){
+            
+            // finish processing event. (remember to generate default file map in event class when created) (done)
+
+            var new_POI_id_ = new_POI_obj.id;
+            var new_event_id = await eel.new_event_ID(new_POI_id_)();
+            var this_event = new EventClass();
+            this_event.id = new_event_id;            
+
+            // set up frontend for new event (done) (not added remove event button yet)
+            var fend_event_update = await fend_update_EVENT_(this_event);
+
+            // add event to new poi obj (done)
+            // set triggers for new event edit (eventdets and eventfiles)
+            attach_event_triggers(new_POI_obj, this_event);
+
+            // add option to delete event when button clicked.
+            // add events to function syncing fend with new poi obj
+            
         }
     } catch(error){
         console.log("Error creating new event from template: ", error);
@@ -70,6 +126,10 @@ function setTriggers(){
             
             // document.getElementById('report_tarea').textContent = JSON.stringify(new_POI_obj, null, 2);
         }
+    });
+
+    document.getElementById("new_poi_new_event_btn").addEventListener('click', function(){
+        addEventClicked();
     });
 
     // basic file attachment triggers

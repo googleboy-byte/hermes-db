@@ -1,5 +1,5 @@
 export class POI{
-    constructor(poiid, basicdets=null, eventdets=null, reporttext=null, imagefiles=null, files=null){
+    constructor(poiid, basicdets=null, reporttext=null, imagefiles=null, files=null){
         // basicdets = {
         //     detlabel : [value, [attached_files]]
         // }
@@ -29,10 +29,9 @@ export class POI{
         } else{
             this.basic = basicdets;
         }
-        if (eventdets == null){
-            this.events = new Map();
-        }
-        this.events = eventdets;
+        
+        this.events = new Map();
+
         this.report = reporttext;
         this.images = imagefiles;
         this.files = files;
@@ -40,7 +39,7 @@ export class POI{
     }
 
     add_EVENT_(eventOBJ){
-        if(eventOBJ instanceof EventClass){
+        if(eventOBJ instanceof EventClass && eventOBJ.id != null){
             this.events.set(eventOBJ.id, eventOBJ);
         }
     }
@@ -67,13 +66,23 @@ export class basicEntities{
 }
 
 export class EventClass{
-    constructor(eventid, eventname, eventdatetime, eventplace, eventdescription, eventfiles){
+    constructor(eventid=null, eventname=null, eventdatetime=null, eventplace=null, eventdescription=null, eventfiles=null){
         this.id = eventid;
-        this.name = eventname;
+        if (eventname == null){
+            this.name = "";
+        } else {
+            this.name = eventname;
+        }
         this.time = eventdatetime;
         this.place = eventplace;
         this.desc = eventdescription;
-        this.files = eventfiles;
+        if (eventfiles == null){
+            this.files = new Map();
+        } else{
+            if (eventfiles instanceof Map){
+                this.files = eventfiles;
+            }
+        }
     }
 }
 
