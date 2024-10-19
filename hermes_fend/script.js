@@ -46,6 +46,10 @@ async function fend_update_EVENT_(POI_event_){
                 for (const [demo_id_, act_id_] of renew_id_map_){
                     temp_eventholder_.firstChild.querySelector(demo_id_).id = act_id_;
                 }
+                temp_eventholder_.firstChild.querySelector("#detach_event_btn_this").onclick = function(){
+                    new_POI_obj.remove_EVENT_(POI_event_.id);
+                    sync_frontend_newPOI();
+                };
                 event_parentcont.appendChild(temp_eventholder_.firstChild);
             }
             // event_parentcont.appendChild(temp_eventholder_.firstChild);
@@ -73,18 +77,60 @@ async function attach_event_triggers(POI_, event_) {
 
         for (var [mem, field] of field_2_mem_map_){
             if(!field.includes("_eventfiles_input")){
-                document.addEventListener('input', function(event){
+                document.getElementById(field).addEventListener('input', function(event){
                     var newval = event.target.value;
                     mem = newval;
                     console.log(mem);
                 });
             } else{
-                // handle file input to event
+                // handle file input to event (do next oct 17 14:14)
+                document.getElementById(field).addEventListener('change', async function(event){
+                    const event_file_this_ = event.target.files[0];
+                    if(event_file_this_){
+                        add_event_file(event_, POI_, event_file_this_);
+                    }
+                });
             }
-        }
-
+        } 
+        
         
     }    
+}
+
+function add_event_file_fend_(event_id, file_){
+    if (new_POI_obj.events.has(event_id)){
+        var event_fend = document.getElementById(event_id + "_eventcont_");
+        var eventfileholder_element_ = event_fend.querySelector('#this_file_holder_');
+        if(eventfileholder_element_){
+            // console.log("holder found");
+            var fend_event_file = document.createElement('div');
+            fend_event_file.id = file_.hash + "_event_file_element";
+            fend_event_file.style.width = '98%';
+            fend_event_file.style.border = '1px solid rgb(1, 1, 131)';
+            fend_event_file.style.marginTop = '4px';
+            fend_event_file.style.padding = '5px 5px';
+            fend_event_file.textContent = file_.fname + " : " + file_.fname;
+            fend_event_file.onclick = function(){
+                new_POI_obj.events.get(event_id).remove_event_file(file_.fname);
+                fend_event_file.remove();
+            };
+            eventfileholder_element_.appendChild(fend_event_file);
+        } else{
+            console.log("holder not found");
+        }
+    
+    }    
+}
+
+function add_event_file(eventObj_, POI_Obj_, file_obj_){
+    var this_event_file_ = new FileClass();
+    var saved_this_event_file_ = this_event_file_.set_file(file_obj_);
+    if (saved_this_event_file_){
+        console.log("file set");
+        POI_Obj_.events.get(eventObj_.id).files.set(this_event_file_.fname, this_event_file_);
+        add_event_file_fend_(eventObj_.id, this_event_file_);
+    }
+
 }
 
 async function addEventClicked(eventid=null){
@@ -102,11 +148,11 @@ async function addEventClicked(eventid=null){
             var fend_event_update = await fend_update_EVENT_(this_event);
 
             // add event to new poi obj (done)
-            // set triggers for new event edit (eventdets and eventfiles)
+            // set triggers for new event edit (eventdets and eventfiles) (done)
             attach_event_triggers(new_POI_obj, this_event);
 
-            // add option to delete event when button clicked.
-            // add events to function syncing fend with new poi obj
+            // add option to delete event when button clicked. (done)
+            // add events to function syncing fend with new poi obj (done)
             
         }
     } catch(error){
@@ -190,7 +236,7 @@ function setTriggers(){
 
 }
 
-function sync_frontend_newPOI(POI_=null){
+async function sync_frontend_newPOI(POI_=null){
     if (POI_ == null){
         POI_ = new_POI_obj;
     }
@@ -252,6 +298,27 @@ function sync_frontend_newPOI(POI_=null){
         // sync report 
 
         document.getElementById('report_tarea').textContent = POI_.report;
+
+        // sync events
+
+        var allevents = POI_.events;
+        const allElements = document.querySelectorAll('*');
+
+        // Iterate through the elements
+        allElements.forEach(element => {
+            // Check if the element's ID contains the specified substring
+            if (element.id.includes("_eventcont_")) {
+                element.remove(); // Remove the element from the document
+            }
+        });
+
+        for (var [eventid, event_this_] of allevents){
+            var fend_event_update = await fend_update_EVENT_(event_this_);
+
+            // add event to new poi obj (done)
+            // set triggers for new event edit (eventdets and eventfiles) (done)
+            attach_event_triggers(new_POI_obj, event_this_);
+        }
 
         
     }

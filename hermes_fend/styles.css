@@ -247,6 +247,9 @@ body{
     margin-top: 1%;
     margin-bottom: 1%;
     min-height: 50%;
+    /* max-height: 80%; */
+    overflow-y: auto;
+    padding: 5px 5px;
 }
 
 .event_container_headerdiv{
@@ -256,6 +259,35 @@ body{
     flex-direction: row;
     justify-content: space-between;
     width: 90%;
+}
+
+.styled-btn-addevent-close {
+    text-align: center;
+    font-weight: bold;
+    /* position: sticky; */
+    /* top: 90%; */
+    /* left: 79%; */
+    /* width: 15%; */
+    padding: 3px 5px;
+    font-size: 16px;
+    font-family: 'Courier New', Courier, monospace;
+    color: white;
+    /* background: linear-gradient(to right,rgba(17, 6, 120, 0.625), rgb(105, 35, 35)); */
+    background: linear-gradient(to right, rgb(33, 33, 33),  rgb(52, 52, 52));
+    border: 1px solid #000c7d; /* Dark blue border */
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    /* height: 5%; */
+}
+
+.styled-btn-addevent-close:hover {
+    background: linear-gradient(to right, rgb(33, 33, 33),  rgb(105, 35, 35));
+    border-color: rgb(105, 35, 35); /* Change to red border on hover */
+}
+
+.styled-btn-addevent-close:active {
+    transform: scale(0.98); /* Button presses down slightly on click */
 }
 
 .styled-btn-addevent {
