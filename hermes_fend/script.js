@@ -47,8 +47,10 @@ async function fend_update_EVENT_(POI_event_){
                     temp_eventholder_.firstChild.querySelector(demo_id_).id = act_id_;
                 }
                 temp_eventholder_.firstChild.querySelector("#detach_event_btn_this").onclick = function(){
+                    // console.log("remove event called: " + POI_event_.id);
                     new_POI_obj.remove_EVENT_(POI_event_.id);
-                    sync_frontend_newPOI();
+                    // console.log(new_POI_obj);    // event is being removed from dat struct. must be problem with frontend
+                    sync_frontend_newPOI();     // maybe update this function to include event ops
                 };
                 event_parentcont.appendChild(temp_eventholder_.firstChild);
             }
@@ -66,32 +68,58 @@ async function attach_event_triggers(POI_, event_) {
         POI_.add_EVENT_(event_);
 
         var field_2_mem_map_ = new Map([
-            [POI_.events.get(event_.id).name, event_.id + "_eventname"],
-            [POI_.events.get(event_.id).place, event_.id + "_eventplace"],
-            [POI_.events.get(event_.id).datetime, event_.id + "_eventdate"],
-            [POI_.events.get(event_.id).desc, event_.id + "_event_descriptionbox"],
-            [POI_.events.get(event_.id).files, event_.id + "_eventfiles_input"]
+            ["name", event_.id + "_eventname"],
+            ["place", event_.id + "_eventplace"],
+            ["datetime", event_.id + "_eventdate"],
+            ["desc", event_.id + "_event_descriptionbox"],
+            ["files", event_.id + "_eventfiles_input"]
         ]);
 
         // keeping separate function to handle files, generalize triggers for other event properties
+        var this_event = await new_POI_obj.events.get(event_.id);
 
-        for (var [mem, field] of field_2_mem_map_){
-            if(!field.includes("_eventfiles_input")){
-                document.getElementById(field).addEventListener('input', function(event){
-                    var newval = event.target.value;
-                    mem = newval;
-                    console.log(mem);
-                });
-            } else{
-                // handle file input to event (do next oct 17 14:14)
-                document.getElementById(field).addEventListener('change', async function(event){
-                    const event_file_this_ = event.target.files[0];
-                    if(event_file_this_){
-                        add_event_file(event_, POI_, event_file_this_);
-                    }
-                });
+        document.getElementById(event_.id + "_eventname").addEventListener('input', async function(event){
+            this_event.name = event.target.value;
+            console.log(this_event);
+        });
+        document.getElementById(event_.id + "_eventplace").addEventListener('input', async function(event){
+            this_event.place = event.target.value;
+            console.log(this_event);
+        });
+        document.getElementById(event_.id + "_eventdate").addEventListener('input', async function(event){
+            this_event.time = event.target.value;
+            console.log(this_event);
+        });
+        document.getElementById(event_.id + "_event_descriptionbox").addEventListener('input', async function(event){
+            this_event.desc = event.target.value;
+            console.log(this_event);
+        });
+        document.getElementById(event_.id + "_eventfiles_input").addEventListener('change', async function(event){
+            const event_file_this_ = event.target.files[0];
+            if(event_file_this_){
+                add_event_file(event_, new_POI_obj, event_file_this_);
             }
-        } 
+            console.log(this_event);
+        });
+
+        // for (var [mem, field] of field_2_mem_map_){
+        //     if(field != event_.id + "_eventfiles_input"){
+        //         document.getElementById(field).addEventListener('input', async function(event){
+                    
+        //             this_event[mem] = event.target.value;
+        //             console.log(mem);
+        //             console.log(this_event);
+        //         });
+        //     } else{
+        //         // handle file input to event (do next oct 17 14:14)
+        //         document.getElementById(field).addEventListener('change', async function(event){
+        //             const event_file_this_ = event.target.files[0];
+        //             if(event_file_this_){
+        //                 add_event_file(event_, POI_, event_file_this_);
+        //             }
+        //         });
+        //     }
+        // } 
         
         
     }    
@@ -201,6 +229,7 @@ function setTriggers(){
                     // console.log(new_POI_obj.basic);
                     sync_frontend_newPOI();
                 }
+                console.log(new_POI_obj);
             }
         });
     }
@@ -299,7 +328,7 @@ async function sync_frontend_newPOI(POI_=null){
 
         document.getElementById('report_tarea').textContent = POI_.report;
 
-        // sync events
+        // // sync events
 
         var allevents = POI_.events;
         const allElements = document.querySelectorAll('*');
@@ -318,10 +347,32 @@ async function sync_frontend_newPOI(POI_=null){
             // add event to new poi obj (done)
             // set triggers for new event edit (eventdets and eventfiles) (done)
             attach_event_triggers(new_POI_obj, event_this_);
+            await update_event_val(event_this_, POI_);
         }
 
         
     }
+}
+
+async function update_event_val(event_, POI_){
+    console.log(POI_);
+    var field_2_mem_map_ = new Map([
+        [POI_.events.get(event_.id).name, event_.id + "_eventname"],
+        [POI_.events.get(event_.id).place, event_.id + "_eventplace"],
+        [POI_.events.get(event_.id).time, event_.id + "_eventdate"],
+        [POI_.events.get(event_.id).desc, event_.id + "_event_descriptionbox"],
+        [POI_.events.get(event_.id).files, event_.id + "_eventfiles_input"]
+    ]);
+
+    for (var [mem, field] of field_2_mem_map_){
+        if(!field.includes("_eventfiles_input")){
+            document.getElementById(field).value = mem;
+        } else{
+            for (const [fileid, file] of mem){
+                add_event_file_fend_(event_.id, file);
+            }
+        }
+    } 
 }
 
 async function importBasicDets(filehandle){

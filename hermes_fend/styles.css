@@ -262,28 +262,33 @@ body{
 }
 
 .styled-btn-addevent-close {
+    display: flex; /* Use flexbox to center text */
+    align-items: center; /* Vertically center the text */
+    justify-content: center; /* Horizontally center the text */
     text-align: center;
     font-weight: bold;
-    /* position: sticky; */
-    /* top: 90%; */
-    /* left: 79%; */
-    /* width: 15%; */
     padding: 3px 5px;
     font-size: 16px;
     font-family: 'Courier New', Courier, monospace;
     color: white;
-    /* background: linear-gradient(to right,rgba(17, 6, 120, 0.625), rgb(105, 35, 35)); */
-    background: linear-gradient(to right, rgb(33, 33, 33),  rgb(52, 52, 52));
+    background: linear-gradient(to right, rgb(33, 33, 33), rgb(52, 52, 52));
     border: 1px solid #000c7d; /* Dark blue border */
     border-radius: 5px;
     cursor: pointer;
     transition: all 0.3s ease;
-    /* height: 5%; */
 }
 
 .styled-btn-addevent-close:hover {
     background: linear-gradient(to right, rgb(33, 33, 33),  rgb(105, 35, 35));
     border-color: rgb(105, 35, 35); /* Change to red border on hover */
+}
+
+.styled-btn-addevent-close:hover::after {
+    content: " (X)";
+    /* position: absolute; */
+    /* left: 0; */
+    /* right: 0; */
+    /* text-align: center; */
 }
 
 .styled-btn-addevent-close:active {
