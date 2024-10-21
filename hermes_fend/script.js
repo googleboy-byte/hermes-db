@@ -24,6 +24,7 @@ async function fend_update_EVENT_(POI_event_){
     try{
         if (POI_event_ instanceof EventClass && POI_event_.id != null){
             // new event frontend
+	    // test emacs comment
     
             const event_parentcont = document.getElementById('newpoi_entry_eventdets_parent');
             const new_event_temp_ = await fetch('new_event_fend.html');
@@ -44,7 +45,17 @@ async function fend_update_EVENT_(POI_event_){
                     ["#demo_eventfiles_input", POI_event_.id + "_eventfiles_input"]
                 ]);
                 for (const [demo_id_, act_id_] of renew_id_map_){
-                    temp_eventholder_.firstChild.querySelector(demo_id_).id = act_id_;
+                    if (temp_eventholder_.firstChild) {
+                        const childElement = temp_eventholder_.firstChild;
+                        const foundElement = childElement.querySelector(demo_id_);
+                        if (foundElement) {
+                            foundElement.id = act_id_;
+                        } else {
+                            console.error("Element with demo_id_ not found within first child.");
+                        }
+                    } else {
+                        alert("First child not found!!!");
+                    }
                 }
                 temp_eventholder_.firstChild.querySelector("#detach_event_btn_this").onclick = function(){
                     // console.log("remove event called: " + POI_event_.id);
@@ -133,15 +144,41 @@ function add_event_file_fend_(event_id, file_){
             // console.log("holder found");
             var fend_event_file = document.createElement('div');
             fend_event_file.id = file_.hash + "_event_file_element";
+            fend_event_file.style.display = 'flex';
+            fend_event_file.style.flexDirection = 'row';
+            fend_event_file.style.justifyContent = 'space-around';
             fend_event_file.style.width = '98%';
             fend_event_file.style.border = '1px solid rgb(1, 1, 131)';
             fend_event_file.style.marginTop = '4px';
             fend_event_file.style.padding = '5px 5px';
-            fend_event_file.textContent = file_.fname + " : " + file_.fname;
-            fend_event_file.onclick = function(){
+            fend_event_file.textContent = file_.fname;
+            // fend_event_file.onclick = function(){
+            //     new_POI_obj.events.get(event_id).remove_event_file(file_.fname);
+            //     fend_event_file.remove();
+            // };
+            var fend_event_file_desc = document.createElement('input');
+            fend_event_file_desc.type = 'text';
+            fend_event_file_desc.className = 'stylish-input';
+            fend_event_file_desc.id = event_id + "_eventfiledesc_" + file_.fname;
+            fend_event_file_desc.style.width = "40%";
+            fend_event_file_desc.style.marginRight = "10px";
+            fend_event_file_desc.addEventListener('input', function(event){
+                var event_file_desc = fend_event_file_desc.value;
+                alert(event_file_desc);
+                new_POI_obj.events.get(event_id).files.get(file_.fname).set_desc(event_file_desc);
+                console.log(file_);
+                console.log(new_POI_obj.events.get(event_id));
+            });
+            fend_event_file.appendChild(fend_event_file_desc);
+            var detach_file_elem = document.createElement('div');
+            detach_file_elem.className = 'styled-btn-addevent-close';
+            detach_file_elem.textContent = "DETACH FILE";
+            detach_file_elem.onclick = function(){
                 new_POI_obj.events.get(event_id).remove_event_file(file_.fname);
                 fend_event_file.remove();
             };
+            fend_event_file.appendChild(detach_file_elem);
+
             eventfileholder_element_.appendChild(fend_event_file);
         } else{
             console.log("holder not found");
