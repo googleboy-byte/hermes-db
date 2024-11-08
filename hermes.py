@@ -1,5 +1,10 @@
 import eel
 import random
+import socket
+
+host = socket.gethostbyname(socket.gethostname())
+print(host)
+
 
 eel.init("hermes_fend")
 
@@ -29,6 +34,21 @@ def new_event_ID(new_POI_id_):
             newval += random.choice(charlist)
         retval = newval
     return retval
+
+@eel.expose
+def new_ent_ID(new_POI_id_):
+    ent_id_list_this_poi_ = []
+    charlist = list("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
+    retval = new_POI_id_ + "_ent_"
+    for i in range(10):
+        retval += random.choice(charlist)
+    while retval in ent_id_list_this_poi_:
+        newval = new_POI_id_ + "_ent_"
+        for i in range(10):
+            newval += random.choice(charlist)
+        retval = newval
+    return retval
+
 
 @eel.expose
 def parse_basicdets(content):

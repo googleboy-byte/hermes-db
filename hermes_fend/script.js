@@ -1,4 +1,4 @@
-import { POI, EventClass, FileClass, basicEntities } from './poi_class.js';
+import { POI, EventClass, FileClass, basicEntities, Entity } from './poi_class.js';
 import * as misc_methods from './misc_functions.js';
 
 var new_POI_obj = null;
@@ -17,6 +17,60 @@ async function newPOI(){
 
 
     // alert(new_POI_obj.id);
+}
+
+async function fend_update_ENTITY_(POI_entity_){
+
+    try{
+        if (POI_entity_ instanceof Entity && POI_entity_.id != null){
+            // new event frontend
+	    // test emacs comment
+    
+            const entity_parentcont = document.getElementById('newpoi_entry_custents_parent');
+            const new_entity_temp_ = await fetch('new_entity_fend.html');
+            if (!new_entity_temp_.ok){
+                throw new Error('Failed to fetch new entity template!!!');
+            }
+            var entity_divtext_ = await new_entity_temp_.text();
+            var temp_entholder_ = document.createElement('div');
+            temp_entholder_.innerHTML = entity_divtext_;
+    
+            while(temp_entholder_.firstChild){
+                temp_entholder_.firstChild.id = POI_entity_.id + '_entcont_';
+                var renew_id_map_ = new Map([
+                    ["#demo_customent_label", POI_entity_.id + "_entname"],
+                    ["#demo_customent_input", POI_entity_.id + "_entval"],
+                    ["#demo_custent_fileinp_label", POI_entity_.id + "_entfileinplabel"],
+                    ["#demo_custent_fileinput", POI_entity_.id + "_entfileinput"],
+                    ["#demo_custent_id", POI_entity_.id + "_entid"]
+                ]);
+                for (const [demo_id_, act_id_] of renew_id_map_){
+                    if (temp_entholder_.firstChild) {
+                        const childElement = temp_entholder_.firstChild;
+                        const foundElement = childElement.querySelector(demo_id_);
+                        if (foundElement) {
+                            foundElement.id = act_id_;
+                        } else {
+                            console.error("Element with demo_id_ not found within first child." + demo_id_);
+                        }
+                    } else {
+                        alert("First child not found!!!");
+                    }
+                }
+                temp_entholder_.firstChild.querySelector("#detach_ENT_btn_this").onclick = function(){
+                    // console.log("remove event called: " + POI_event_.id);
+                    new_POI_obj.remove_ENTITY_(POI_entity_.id);
+                    // console.log(new_POI_obj);    // event is being removed from dat struct. must be problem with frontend
+                    sync_frontend_newPOI();     // maybe update this function to include event ops
+                };
+                entity_parentcont.appendChild(temp_entholder_.firstChild);
+            }
+            // event_parentcont.appendChild(temp_eventholder_.firstChild);
+        }
+    } catch (error){
+        console.log("error in fend_update_ENTITY_ :", error);
+    }
+    return
 }
 
 async function fend_update_EVENT_(POI_event_){
@@ -71,6 +125,41 @@ async function fend_update_EVENT_(POI_event_){
         console.log("error in fend_update_EVENT_ :", error);
     }
     return
+}
+
+async function attach_entity_triggers(POI_, ent_) {
+    // attach/renew event to new_POI
+    if (ent_ instanceof Entity && POI_ instanceof POI && ent_.id != null){
+        POI_.add_ENTITY_(ent_);
+
+        // var field_2_mem_map_ = new Map([
+        //     ["name", ent_.id + "_entname"],
+        //     ["id", ent_.id + "_entid"],
+        //     ["files", ent_.id + "_entfileinput"],
+        //     ["val", ent_.id + "_entval"],
+        // ]);
+
+        // keeping separate function to handle files, generalize triggers for other event properties
+        var this_ent = await new_POI_obj.ents.get(ent_.id);
+
+        document.getElementById(ent_.id + "_entname").addEventListener('input', async function(event){
+            this_ent.name = event.target.value;
+            console.log(this_ent);
+        });
+        document.getElementById(ent_.id + "_entval").addEventListener('input', async function(event){
+            this_ent.val = event.target.value;
+            console.log(this_ent);
+        });
+        
+        document.getElementById(ent_.id + "_entfileinput").addEventListener('change', async function(event){
+            const ent_file_this_ = event.target.files[0];
+            if(ent_file_this_){
+                add_ent_file(ent_, new_POI_obj, ent_file_this_);
+            }
+            console.log(this_ent);
+        });
+        
+    }    
 }
 
 async function attach_event_triggers(POI_, event_) {
@@ -136,6 +225,63 @@ async function attach_event_triggers(POI_, event_) {
     }    
 }
 
+
+function add_ent_file_fend_(ent_id, file_){
+    if (new_POI_obj.ents.has(ent_id)){
+        var ent_fend = document.getElementById(ent_id + "_entcont_");
+        var entfileholder_element_ = ent_fend.querySelector('#this_file_holder_');
+        if(entfileholder_element_){
+            // console.log("holder found");
+            var fend_ent_file = document.createElement('div');
+            fend_ent_file.id = file_.fname + "_ent_file_element";
+            fend_ent_file.style.display = 'flex';
+            fend_ent_file.style.flexDirection = 'row';
+            fend_ent_file.style.justifyContent = 'space-around';
+            fend_ent_file.style.width = '98%';
+            fend_ent_file.style.border = '1px solid rgb(1, 1, 131)';
+            fend_ent_file.style.marginTop = '4px';
+            fend_ent_file.style.padding = '5px 5px';
+            fend_ent_file.textContent = file_.fname;
+            // fend_event_file.onclick = function(){
+            //     new_POI_obj.events.get(event_id).remove_event_file(file_.fname);
+            //     fend_event_file.remove();
+            // };
+            var fend_ent_file_desc = document.createElement('input');
+            fend_ent_file_desc.type = 'text';
+            fend_ent_file_desc.className = 'stylish-input';
+            fend_ent_file_desc.id = ent_id + "_entfiledesc_" + file_.fname;
+            fend_ent_file_desc.style.width = "40%";
+            fend_ent_file_desc.style.marginRight = "10px";
+            fend_ent_file_desc.addEventListener('input', function(event){
+                var ent_file_desc = event.target.value;
+                // alert(ent_file_desc);
+                // if (event_file_desc instanceof String)
+                new_POI_obj.ents.get(ent_id).files.get(file_.fname).desc = ent_file_desc;
+                console.log(file_);
+                console.log(new_POI_obj.ents.get(ent_id));
+            });
+            if (file_.desc != null){
+                fend_ent_file_desc.value = file_.desc;
+            }
+            fend_ent_file.appendChild(fend_ent_file_desc);
+            var detach_file_elem = document.createElement('div');
+            detach_file_elem.className = 'styled-btn-addevent-close';
+            detach_file_elem.textContent = "DETACH FILE";
+            detach_file_elem.onclick = function(){
+                new_POI_obj.ents.get(ent_id).remove_entity_file(file_.fname);
+                fend_ent_file.remove();
+            };
+            fend_ent_file.appendChild(detach_file_elem);
+
+            entfileholder_element_.appendChild(fend_ent_file);
+        } else{
+            console.log("holder not found");
+        }
+    
+    }    
+}
+
+
 function add_event_file_fend_(event_id, file_){
     if (new_POI_obj.events.has(event_id)){
         var event_fend = document.getElementById(event_id + "_eventcont_");
@@ -143,7 +289,7 @@ function add_event_file_fend_(event_id, file_){
         if(eventfileholder_element_){
             // console.log("holder found");
             var fend_event_file = document.createElement('div');
-            fend_event_file.id = file_.hash + "_event_file_element";
+            fend_event_file.id = file_.fname + "_event_file_element";
             fend_event_file.style.display = 'flex';
             fend_event_file.style.flexDirection = 'row';
             fend_event_file.style.justifyContent = 'space-around';
@@ -163,12 +309,16 @@ function add_event_file_fend_(event_id, file_){
             fend_event_file_desc.style.width = "40%";
             fend_event_file_desc.style.marginRight = "10px";
             fend_event_file_desc.addEventListener('input', function(event){
-                var event_file_desc = fend_event_file_desc.value;
-                alert(event_file_desc);
-                new_POI_obj.events.get(event_id).files.get(file_.fname).set_desc(event_file_desc);
+                var event_file_desc = event.target.value;
+                // alert(event_file_desc);
+                // if (event_file_desc instanceof String)
+                new_POI_obj.events.get(event_id).files.get(file_.fname).desc = event_file_desc;
                 console.log(file_);
                 console.log(new_POI_obj.events.get(event_id));
             });
+            if (file_.desc != null){
+                fend_event_file_desc.value = file_.desc;
+            }
             fend_event_file.appendChild(fend_event_file_desc);
             var detach_file_elem = document.createElement('div');
             detach_file_elem.className = 'styled-btn-addevent-close';
@@ -187,6 +337,17 @@ function add_event_file_fend_(event_id, file_){
     }    
 }
 
+function add_ent_file(entObj_, POI_Obj_, file_obj_){
+    var this_ent_file_ = new FileClass();
+    var saved_this_ent_file_ = this_ent_file_.set_file(file_obj_);
+    if (saved_this_ent_file_){
+        console.log("file set");
+        POI_Obj_.ents.get(entObj_.id).files.set(this_ent_file_.fname, this_ent_file_);
+        add_ent_file_fend_(entObj_.id, this_ent_file_);
+    }
+
+}
+
 function add_event_file(eventObj_, POI_Obj_, file_obj_){
     var this_event_file_ = new FileClass();
     var saved_this_event_file_ = this_event_file_.set_file(file_obj_);
@@ -196,6 +357,34 @@ function add_event_file(eventObj_, POI_Obj_, file_obj_){
         add_event_file_fend_(eventObj_.id, this_event_file_);
     }
 
+}
+
+async function addEntClicked(){
+    try{
+        if (new_POI_obj){
+            
+            // finish processing entity. (remember to generate default file map in event class when created) (done)
+
+            var new_POI_id_ = new_POI_obj.id;
+            var new_entity_id = await eel.new_ent_ID(new_POI_id_)();
+            var this_entity = new Entity();
+            this_entity.id = new_entity_id;            
+
+            // set up frontend for new event (done)
+            var fend_entity_update = await fend_update_ENTITY_(this_entity);
+
+            // add event to new poi obj (done)
+            // set triggers for new event edit (eventdets and eventfiles) (done)
+            attach_entity_triggers(new_POI_obj, this_entity); // MODIFY FOR ENTITIES
+
+            // add option to delete event when button clicked. (done)
+            // add events to function syncing fend with new poi obj (done)
+            update_entity_val(this_entity, new_POI_obj);
+            
+        }
+    } catch(error){
+        console.log("Error creating new ENTITY from template: ", error);
+    }
 }
 
 async function addEventClicked(eventid=null){
@@ -300,6 +489,12 @@ function setTriggers(){
         console.log(new_POI_obj.report);
     });
 
+    // custom entities 
+
+    document.getElementById("new_poi_new_entity_btn").addEventListener('click', function(){
+        addEntClicked();
+    });
+
 }
 
 async function sync_frontend_newPOI(POI_=null){
@@ -387,8 +582,56 @@ async function sync_frontend_newPOI(POI_=null){
             await update_event_val(event_this_, POI_);
         }
 
+        // // sync events
+
+        var allents = POI_.ents;
+        const allEntities = document.querySelectorAll('*');
+
+        // Iterate through the elements
+        allEntities.forEach(element => {
+            // Check if the element's ID contains the specified substring
+            if (element.id.includes("_entcont_")) {
+                element.remove(); // Remove the element from the document
+            }
+        });
+
+        for (var [entid, ent_this_] of allents){
+            var fend_ent_update = await fend_update_ENTITY_(ent_this_);
+
+            // add event to new poi obj (done)
+            // set triggers for new event edit (eventdets and eventfiles) (done)
+            attach_entity_triggers(new_POI_obj, ent_this_);
+            await update_entity_val(ent_this_, POI_);
+        }
+
         
     }
+}
+
+
+async function update_entity_val(ent_, POI_){
+    console.log(POI_);
+    var field_2_mem_map_ = new Map([
+        [POI_.ents.get(ent_.id).name, ent_.id + "_entname"],
+        [POI_.ents.get(ent_.id).val, ent_.id + "_entval"],
+        [POI_.ents.get(ent_.id).id, ent_.id + "_entid"],
+        // [POI_.ents.get(ent_.id).desc, ent_.id + "_event_descriptionbox"],
+        [POI_.ents.get(ent_.id).files, ent_.id + "_entfileinput"]
+    ]);
+
+    for (var [mem, field] of field_2_mem_map_){
+        if(!field.includes("_entfileinput")){
+            if (field.includes("_entid")){
+                document.getElementById(field).textContent = mem;
+            } else{
+                document.getElementById(field).value = mem;
+            }
+        } else{
+            for (const [fileid, file] of mem){
+                add_ent_file_fend_(ent_.id, file);
+            }
+        }
+    } 
 }
 
 async function update_event_val(event_, POI_){
@@ -411,6 +654,8 @@ async function update_event_val(event_, POI_){
         }
     } 
 }
+
+
 
 async function importBasicDets(filehandle){
     const reader = new FileReader();

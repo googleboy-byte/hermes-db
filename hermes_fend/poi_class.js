@@ -29,6 +29,8 @@ export class POI{
         } else{
             this.basic = basicdets;
         }
+
+        this.ents = new Map();
         
         this.events = new Map();
 
@@ -63,6 +65,18 @@ export class POI{
             this.events.delete(eventID);
         }
     }
+
+    add_ENTITY_(entOBJ){
+        if(entOBJ instanceof Entity && entOBJ.id != null){
+            this.ents.set(entOBJ.id, entOBJ);
+        }
+    }
+
+    remove_ENTITY_(entID){
+        if (this.ents.has(entID)){
+            this.ents.delete(entID);
+        }
+    }
 }
 
 export class basicEntities{
@@ -76,6 +90,25 @@ export class basicEntities{
         this.occupation = occupation;
         this.education = education;
         this.languages = languages;
+    }
+}
+
+export class Entity{
+    constructor(entityname=null, entityid=null, entityfiles=null, entityval=null){
+        this.name = entityname;
+        this.id = entityid;
+        this.files = entityfiles;
+        this.val = entityval;
+
+        if (this.files == null){
+            this.files = new Map();
+        }
+    }
+
+    remove_entity_file(fileid){
+        if (this.files.has(fileid)){
+            this.files.delete(fileid);
+        }
     }
 }
 
