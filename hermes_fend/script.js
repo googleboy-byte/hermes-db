@@ -495,6 +495,125 @@ function setTriggers(){
         addEntClicked();
     });
 
+    // upload image triggers
+
+    var imageinput = document.querySelector("#imagefilesinput");
+    imageinput.addEventListener('change', (event) => {
+        const imgfiles = event.target.files;
+        handleimages(imgfiles);
+        event.target.value = '';
+    });
+
+    var clearimagesbtn = document.querySelector('#clearimagesbtn');
+    clearimagesbtn.addEventListener('click', function(){
+        clear_newPOI_images();
+    });
+
+}
+
+async function clear_newPOI_images() {
+    new_POI_obj.images = new Map();
+    refresh_NewPOI_Gallery();
+}
+
+async function handleimages(allfiles){
+    // alert("img handler called");
+    
+    const imgFiles_ = Array.from(allfiles).filter(file => file.type.startsWith('image/'));
+    var gallery_element_ = document.getElementById("gallery");
+    gallery_element_.innerHTML = "";
+    if (imgFiles_.length > 0){
+        imgFiles_.forEach(imgfile => {
+            // var this_Img_File_ = new FileClass();
+            // this_Img_File_.set_file(imgfile);
+            new_POI_obj.images.set(imgfile.name, imgfile);
+            
+            // var img = document.createElement('img');
+            
+            // const deleteButton = document.createElement('button');
+            
+            // deleteButton.textContent = 'X';
+            // deleteButton.className = 'delete-button';
+            // deleteButton.onclick = () => {
+            //     new_POI_obj.images.delete(imgfile.fname);
+            //     // updateGallery(); // Update the gallery display
+            //     refresh_NewPOI_Gallery();
+            // };
+            
+            // const galleryItem = document.createElement('div');
+            // galleryItem.className = 'gallery-item';
+            
+            // const imgreader = new FileReader();
+            
+            // imgreader.onload = function(e){
+            //     img.src = e.target.result;
+            //     img.id = imgfile.fname + "_img_element_";
+            //     // img.onclick = function(){
+            //     //     new_POI_obj.images.delete(this_Img_File_.fname);
+            //     //     // refresh_NewPOI_Gallery();
+            //     // };
+            //     galleryItem.appendChild(img);
+            //     galleryItem.appendChild(deleteButton);
+            //     gallery_element_.appendChild(galleryItem);
+            // };            
+            
+            // imgreader.readAsDataURL(imgfile);
+        
+        });
+    }
+    refresh_NewPOI_Gallery();
+}
+
+async function refresh_NewPOI_Gallery(){
+    
+    var gallery_element_ = document.getElementById("gallery");
+    gallery_element_.innerHTML = "";
+
+    console.log(new_POI_obj);
+
+    // if (new_POI_obj.images.length > 0){
+
+    new_POI_obj.images.forEach((imgfile, imgfilename) => {
+        // var this_Img_File_ = new FileClass();
+        // this_Img_File_.set_file(imgfile);
+        // new_POI_obj.images.set(imgfile.name, imgfile);
+        
+        var img = document.createElement('img');
+        
+        const deleteButton = document.createElement('button');
+        
+        deleteButton.textContent = 'X';
+        deleteButton.className = 'delete-button';
+        deleteButton.onclick = () => {
+            new_POI_obj.images.delete(imgfile.name);
+            // updateGallery(); // Update the gallery display
+            refresh_NewPOI_Gallery();
+        };
+        
+        const galleryItem = document.createElement('div');
+        galleryItem.className = 'gallery-item';
+        
+        const imgreader = new FileReader();
+        
+        imgreader.onload = function(e){
+            img.src = e.target.result;
+            img.id = imgfile.name + "_img_element_";
+            // img.onclick = function(){
+            //     new_POI_obj.images.delete(this_Img_File_.fname);
+            //     // refresh_NewPOI_Gallery();
+            // };
+            galleryItem.appendChild(img);
+            galleryItem.appendChild(deleteButton);
+            gallery_element_.appendChild(galleryItem);
+        };            
+        
+        imgreader.readAsDataURL(imgfile);
+    
+    });
+
+
+    // }
+
 }
 
 async function sync_frontend_newPOI(POI_=null){

@@ -1,9 +1,16 @@
 import eel
 import random
 import socket
+import argparse
 
-host = socket.gethostbyname(socket.gethostname())
-print(host)
+# host = socket.gethostbyname(socket.gethostname())
+# print(host)
+
+parser = argparse.ArgumentParser()
+
+parser.add_argument('--host', default="192.168.0.208")
+
+args = parser.parse_args()
 
 
 eel.init("hermes_fend")
@@ -66,7 +73,7 @@ def parse_basicdets(content):
                     'id number': "ID Number",
                     'location': "Location",
                     'occupation': "Occupation",
-                    'education': "Education",
+                    'education': "Education",   
                     'languages': "Languages"
     }
     to_add_keys = []
@@ -86,4 +93,4 @@ def parse_basicdets(content):
     #     print(keylist[i], vallist[i])
     return keylist, vallist
 
-eel.start("index.html", size=(1600, 900), mode="chromium")
+eel.start("index.html", size=(1600, 900), mode="chromium", host=args.host)

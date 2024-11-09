@@ -183,10 +183,14 @@
                 <div id="image-preview" class="scrollable"></div>
             </div> -->
             <div id="input_imagefile_container" class="gallery-input">
-                <div id="filepond" class="drag-area">
+                <!-- <div id="filepond" class="drag-area">
                     <input type="file" id="file-input" accept="image/*" multiple>
-                </div>
+                </div> -->
+                <label for="imagefilesinput" class="galleryfileinputlabel">UPLOAD IMAGES</label>
+                <input id="imagefilesinput" type="file" multiple style="display: none;">
+                <div id="clearimagesbtn" class="styled-btn-addevent-close">DELETE ALL IMAGES</div>
             </div>
+            <br>
             <!-- <div id="file-list"></div> -->
             <div id="gallery" class="gallery"></div>
         </div>
