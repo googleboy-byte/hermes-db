@@ -111,6 +111,22 @@ body{
     background-color: #f0f8ff;
 }
 
+.thisfileshow_class{
+    width: 98%;
+    align-self: center;
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 5px;
+    background-color: #333;
+    color: antiquewhite;
+    font-size: large;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    border-radius: 5px;
+    text-align: center;
+    flex-direction: row;
+}
+
 .gallery-input{
     width: 30%; 
     /* margin-left: 2.5%;  */
@@ -156,7 +172,7 @@ body{
     /* margin-top: 20px; */
     width: 70%;
     margin-right: 0.5%;
-    /* border: 1px solid rgb(1, 1, 131); */
+    border: 1px solid rgb(1, 1, 131);
     min-height: 50vh;
     max-height: 50vh;
     overflow-y: auto;
@@ -174,6 +190,18 @@ body{
 .delete-button {
     position: absolute;
     top: 5px;
+    right: 5px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.delete-button1 {
+    align-self: flex-end;
+    /* top: 5px; */
     right: 5px;
     background-color: red;
     color: white;

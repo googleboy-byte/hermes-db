@@ -509,6 +509,59 @@ function setTriggers(){
         clear_newPOI_images();
     });
 
+    // upload files triggers
+
+    var fileinput = document.querySelector("#filesinput");
+    fileinput.addEventListener('change', (event) => {
+        const inputfiles = event.target.files;
+        handlefiles(inputfiles);
+        event.target.value = '';
+    });
+
+    var clearfilesbtn = document.querySelector("#clearfilesbtn");
+    clearfilesbtn.addEventListener('click', function(){
+        clear_newPOI_files();
+    });
+
+}
+
+async function clear_newPOI_files(){
+    new_POI_obj.files = new Map();
+    update_newPOI_files_fend();
+}
+
+async function handlefiles(inputfiles){
+    const imgFiles2 = Array.from(inputfiles).filter(file => file.type.startsWith('image/'));
+    handleimages(null, imgFiles2);
+    const nonImageFiles = Array.from(inputfiles).filter(file => !file.type.startsWith('image/'));
+    nonImageFiles.forEach(file => {
+        var thisFile = new FileClass();
+        thisFile.set_file(file);
+        new_POI_obj.files.set(thisFile.fname, thisFile);
+    });
+    update_newPOI_files_fend();
+}
+
+async function update_newPOI_files_fend(){
+    var files_fend_cont_ = document.querySelector('#files_cont_');
+    files_fend_cont_.innerHTML = '';
+    new_POI_obj.files.forEach((file, filename) => {
+        var this_file_element_ = document.createElement('div');
+        this_file_element_.className = 'thisfileshow_class';
+        this_file_element_.textContent = filename;
+
+        var thisfile_del_btn_ = document.createElement('button');
+        thisfile_del_btn_.className = 'delete-button1';
+        thisfile_del_btn_.textContent = 'X';
+        thisfile_del_btn_.onclick = function(){
+            new_POI_obj.files.delete(filename);
+            update_newPOI_files_fend();
+        };
+
+        this_file_element_.appendChild(thisfile_del_btn_);
+
+        files_fend_cont_.appendChild(this_file_element_);
+    });
 }
 
 async function clear_newPOI_images() {
@@ -516,10 +569,14 @@ async function clear_newPOI_images() {
     refresh_NewPOI_Gallery();
 }
 
-async function handleimages(allfiles){
+async function handleimages(allfiles=null, imgFiles1=null){
     // alert("img handler called");
-    
-    const imgFiles_ = Array.from(allfiles).filter(file => file.type.startsWith('image/'));
+    var imgFiles_ = null;
+    if (imgFiles1 == null){
+        imgFiles_ = Array.from(allfiles).filter(file => file.type.startsWith('image/'));
+    } else{
+        imgFiles_ = imgFiles1;
+    }
     var gallery_element_ = document.getElementById("gallery");
     gallery_element_.innerHTML = "";
     if (imgFiles_.length > 0){
