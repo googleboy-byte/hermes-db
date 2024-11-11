@@ -1,4 +1,4 @@
-import { POI, EventClass, FileClass, basicEntities, Entity } from './poi_class.js';
+import { POI, EventClass, FileClass, basicEntities, Entity, ImageClass } from './poi_class.js';
 import * as misc_methods from './misc_functions.js';
 
 var new_POI_obj = null;
@@ -581,10 +581,10 @@ async function handleimages(allfiles=null, imgFiles1=null){
     gallery_element_.innerHTML = "";
     if (imgFiles_.length > 0){
         imgFiles_.forEach(imgfile => {
-            // var this_Img_File_ = new FileClass();
-            // this_Img_File_.set_file(imgfile);
+            var this_Img_File_ = new ImageClass();
+            this_Img_File_.setImage(imgfile);
             new_POI_obj.images.set(imgfile.name, imgfile);
-            
+            new_POI_obj.images_json_serialized.set(imgfile.name, this_Img_File_);
             // var img = document.createElement('img');
             
             // const deleteButton = document.createElement('button');
@@ -643,6 +643,7 @@ async function refresh_NewPOI_Gallery(){
         deleteButton.className = 'delete-button';
         deleteButton.onclick = () => {
             new_POI_obj.images.delete(imgfile.name);
+            new_POI_obj.images_json_serialized.delete(imgfile.name);
             // updateGallery(); // Update the gallery display
             refresh_NewPOI_Gallery();
         };
