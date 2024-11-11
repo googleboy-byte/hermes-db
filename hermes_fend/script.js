@@ -523,6 +523,24 @@ function setTriggers(){
         clear_newPOI_files();
     });
 
+    // encryption key set trigger
+
+    // document.getElementById('POI_encryptionkey').addEventListener('input', function(event){
+    //     if(new_POI_obj){
+    //         new_POI_obj.private_key = event.target.value;
+    //         console.log(new_POI_obj);
+    //     }
+    // });
+
+    // commented the above to avoid mistakenly changing the encryption key
+
+    document.getElementById("setkeybtn").addEventListener('click', function(){
+        if (new_POI_obj){
+            new_POI_obj.private_key = document.getElementById('POI_encryptionkey').value;
+            console.log(new_POI_obj);
+        }
+    });
+
 }
 
 async function clear_newPOI_files(){
@@ -780,6 +798,14 @@ async function sync_frontend_newPOI(POI_=null){
             attach_entity_triggers(new_POI_obj, ent_this_);
             await update_entity_val(ent_this_, POI_);
         }
+
+        // images and files
+
+        refresh_NewPOI_Gallery();
+
+        update_newPOI_files_fend();
+
+        document.getElementById("POI_encryptionkey").value = POI_.private_key;
 
         
     }
