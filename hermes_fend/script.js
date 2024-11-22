@@ -541,6 +541,14 @@ function setTriggers(){
         }
     });
 
+    document.getElementById("savefilebtn").addEventListener('click', async function(){
+        if (new_POI_obj){
+            const serializedData = await new_POI_obj.toJSON();
+            console.log(JSON.stringify(serializedData));
+            var sendpoitopy = eel.receive_poi(JSON.stringify(serializedData))();   
+        }
+    });
+
 }
 
 async function clear_newPOI_files(){

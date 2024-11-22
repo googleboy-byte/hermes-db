@@ -89,6 +89,31 @@ export class POI{
             this.ents.delete(entID);
         }
     }
+
+    async toJSON() {
+        const serializedImages = {};
+        for (const [key, file] of this.images) {
+            serializedImages[key] = {
+                name: file.name,
+                type: file.type,
+                size: file.size,
+                base64: await getBase64(file)
+            };
+        }
+
+        return {
+            id: this.id,
+            basic: this.basic.toJSON(),
+            ents: Array.from(this.ents, ([key, value]) => [key, value.toJSON()]),
+            events: Array.from(this.events, ([key, value]) => [key, value.toJSON()]),
+            report: this.report,
+            images: serializedImages,
+            images_json_serialized: Array.from(this.images_json_serialized, ([key, value]) => [key, value.toJSON()]),
+            files: Array.from(this.files, ([key, value]) => [key, value.toJSON()]),
+            gen_graph: this.gen_graph,
+            private_key: this.private_key
+        };
+    }
 }
 
 export class basicEntities{
@@ -102,6 +127,20 @@ export class basicEntities{
         this.occupation = occupation;
         this.education = education;
         this.languages = languages;
+    }
+
+    toJSON() {
+        return {
+            name: this.name,
+            gender: this.gender,
+            dob: this.dob,
+            nationality: this.nationality,
+            idnum: this.idnum,
+            location: this.location,
+            occupation: this.occupation,
+            education: this.education,
+            languages: this.languages
+        };
     }
 }
 
@@ -121,6 +160,15 @@ export class Entity{
         if (this.files.has(fileid)){
             this.files.delete(fileid);
         }
+    }
+
+    toJSON() {
+        return {
+            name: this.name,
+            id: this.id,
+            files: Array.from(this.files, ([key, value]) => [key, value.toJSON()]),
+            val: this.val
+        };
     }
 }
 
@@ -149,15 +197,31 @@ export class EventClass{
             this.files.delete(fileid);
         }
     }
+
+    toJSON() {
+        return {
+            id: this.id,
+            name: this.name,
+            time: this.time,
+            place: this.place,
+            desc: this.desc,
+            files: Array.from(this.files, ([key, value]) => [key, value.toJSON()])
+        };
+    }
 }
 
 export class ImageClass{
     constructor(){   
+        this.img_json_serializable = null;
     }
 
     async setImage(imageobject){
         // this.image = imageobject;
         this.img_json_serializable = await getBase64(imageobject);
+    }
+
+    toJSON() {
+        return { img_json_serializable: this.img_json_serializable };
     }
 }
 
@@ -197,30 +261,36 @@ export class FileClass{
         }
     }
 
+    toJSON() {
+        return {
+            hash: this.hash,
+            type: this.type,
+            fname: this.fname,
+            file_b64: this.file_b64,
+            desc: this.desc,
+            src: this.src
+        };
+    }
+
 }
 
+// Utility to convert file to Base64
 async function getBase64(fileobj) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
-        
-        // Define the onload event handler
         reader.onload = () => {
-            // Get the Base64 encoded string
-            const base64String = reader.result.split(',')[1]; // Remove the metadata
-            resolve(base64String); // Resolve the promise with the Base64 string
+            const base64String = reader.result.split(',')[1];
+            resolve(base64String);
         };
-
-        // Define the onerror event handler
         reader.onerror = () => {
-            reject(new Error('Error reading file')); // Reject the promise on error
+            reject(new Error('Error reading file'));
         };
-
-        // Read the file as a Data URL
         reader.readAsDataURL(fileobj);
     });
 }
 
-async function calculate_sha256(fileBuffer){
+// Utility to calculate SHA-256 hash
+async function calculate_sha256(fileBuffer) {
     const hashBuffer = await crypto.subtle.digest('SHA-256', fileBuffer);
     const hashArray = Array.from(new Uint8Array(hashBuffer));
     return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');

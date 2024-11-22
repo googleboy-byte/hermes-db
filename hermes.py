@@ -2,6 +2,7 @@ import eel
 import random
 import socket
 import argparse
+import poi_lib
 
 # host = socket.gethostbyname(socket.gethostname())
 # print(host)
@@ -92,5 +93,9 @@ def parse_basicdets(content):
     # for i in range(len(keylist)):
     #     print(keylist[i], vallist[i])
     return keylist, vallist
+
+@eel.expose
+def receive_poi(JSON_POI_):
+    parsed_poi = poi_lib.deserialize_poi(JSON_POI_)
 
 eel.start("index.html", size=(1600, 900), mode="chromium", host=args.host)
